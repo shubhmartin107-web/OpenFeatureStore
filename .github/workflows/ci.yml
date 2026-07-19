@@ -10,6 +10,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   PROTOC_VERSION: 29.3
+  DUCKDB_VERSION: 1.1.0
 
 jobs:
   check:
@@ -26,6 +27,13 @@ jobs:
           unzip -o /tmp/protoc.zip -d /tmp/protoc
           echo "/tmp/protoc/bin" >> "$GITHUB_PATH"
           echo "PROTOC=/tmp/protoc/bin/protoc" >> "$GITHUB_ENV"
+
+      - name: Install DuckDB library
+        run: |
+          curl -fsSL "https://github.com/duckdb/duckdb/releases/download/v${DUCKDB_VERSION}/libduckdb-linux-amd64.zip" -o /tmp/duckdb-lib.zip
+          mkdir -p /tmp/duckdb-lib
+          unzip -o /tmp/duckdb-lib.zip -d /tmp/duckdb-lib
+          echo "DUCKDB_LIB_DIR=/tmp/duckdb-lib" >> "$GITHUB_ENV"
 
       - name: cargo check
         run: cargo check --workspace --exclude ofs-python
@@ -46,8 +54,18 @@ jobs:
           echo "/tmp/protoc/bin" >> "$GITHUB_PATH"
           echo "PROTOC=/tmp/protoc/bin/protoc" >> "$GITHUB_ENV"
 
+      - name: Install DuckDB library
+        run: |
+          curl -fsSL "https://github.com/duckdb/duckdb/releases/download/v${DUCKDB_VERSION}/libduckdb-linux-amd64.zip" -o /tmp/duckdb-lib.zip
+          mkdir -p /tmp/duckdb-lib
+          unzip -o /tmp/duckdb-lib.zip -d /tmp/duckdb-lib
+          echo "DUCKDB_LIB_DIR=/tmp/duckdb-lib" >> "$GITHUB_ENV"
+
       - name: cargo test
         run: cargo test --workspace --exclude ofs-python
+        env:
+          LD_LIBRARY_PATH: /tmp/duckdb-lib
+          LD_RUN_PATH: /tmp/duckdb-lib
 
   lint:
     runs-on: ubuntu-latest
