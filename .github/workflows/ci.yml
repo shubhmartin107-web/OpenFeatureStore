@@ -92,4 +92,3 @@ jobs:
       - uses: EmbarkStudios/cargo-deny-action@v2
         with:
           command: check ${{ matrix.checks }}
-          arguments: --manifest-path Cargo.toml
