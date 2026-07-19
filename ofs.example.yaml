@@ -1,0 +1,47 @@
+version: "1"
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+  grpc_port: 8081
+  rate_limit:
+    enabled: true
+    default_rps: 100
+
+auth:
+  provider: "noop"
+
+registry:
+  backend: "sqlite"
+  path: "./data/registry.db"
+
+online_store:
+  backend: "sqlite"
+  path: "./data/online.db"
+
+offline_store:
+  backend: "duckdb"
+  path: "./data/offline.db"
+
+stream_ingest:
+  enabled: false
+  source: "http_push"
+
+lifecycle:
+  ttl_default_days: 90
+  cleanup_interval_secs: 3600
+
+observability:
+  metrics_enabled: true
+  tracing_enabled: true
+  log_level: "info"
+  log_format: "json"
+
+cache:
+  enabled: true
+  max_size: 10000
+  ttl_secs: 300
+
+materialization:
+  parallelism: 4
+  batch_size: 1000

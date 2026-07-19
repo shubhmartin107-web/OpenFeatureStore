@@ -1,0 +1,6 @@
+[env]
+DUCKDB_LIB_DIR = "/tmp/duckdb-lib"
+
+[target.x86_64-unknown-linux-gnu]
+linker = "cc"
+rustflags = ["-C", "link-args=-Wl,-rpath,/tmp/duckdb-lib"]

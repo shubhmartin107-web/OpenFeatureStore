@@ -1,0 +1,19 @@
+[package]
+name = "ofs-remote-store"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "S3/GCS/Azure remote storage backend for offline feature store"
+
+[dependencies]
+ofs-config = { path = "../ofs-config" }
+object_store.workspace = true
+url.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+chrono.workspace = true
+async-trait.workspace = true
+futures-util.workspace = true

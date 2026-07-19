@@ -1,0 +1,62 @@
+syntax = "proto3";
+package feast.core;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "feast/core/DataSource.proto";
+import "feast/core/Feature.proto";
+import "feast/core/Transformation.proto";
+
+enum FeatureViewState {
+  STATE_UNSPECIFIED = 0;
+  CREATED = 1;
+  GENERATED = 2;
+  MATERIALIZING = 3;
+  AVAILABLE_ONLINE = 4;
+}
+
+message FeatureView {
+  FeatureViewSpec spec = 1;
+  FeatureViewMeta meta = 2;
+}
+
+message FeatureViewSpec {
+  string name = 1;
+  string project = 2;
+  repeated string entities = 3;
+  repeated FeatureSpecV2 features = 4;
+  map<string, string> tags = 5;
+  google.protobuf.Duration ttl = 6;
+  DataSource batch_source = 7;
+  bool online = 8;
+  DataSource stream_source = 9;
+  string description = 10;
+  string owner = 11;
+  repeated FeatureSpecV2 entity_columns = 12;
+  bool offline = 13;
+  repeated FeatureViewSpec source_views = 14;
+  FeatureTransformationV2 feature_transformation = 15;
+  string mode = 16;
+  bool enable_validation = 17;
+  string version = 18;
+  string org = 19;
+  bool disabled = 20;
+}
+
+message FeatureViewMeta {
+  google.protobuf.Timestamp created_timestamp = 1;
+  google.protobuf.Timestamp last_updated_timestamp = 2;
+  repeated MaterializationInterval materialization_intervals = 3;
+  int32 current_version_number = 4;
+  string version_id = 5;
+  FeatureViewState state = 6;
+}
+
+message MaterializationInterval {
+  google.protobuf.Timestamp start_time = 1;
+  google.protobuf.Timestamp end_time = 2;
+}
+
+message FeatureViewList {
+  repeated FeatureView feature_views = 1;
+}

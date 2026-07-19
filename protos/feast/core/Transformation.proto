@@ -1,0 +1,21 @@
+syntax = "proto3";
+package feast.core;
+
+message UserDefinedFunctionV2 {
+  string name = 1;
+  bytes body = 2;
+  string body_text = 3;
+  string mode = 4;
+}
+
+message FeatureTransformationV2 {
+  oneof transformation {
+    UserDefinedFunctionV2 user_defined_function = 1;
+    SubstraitTransformationV2 substrait_transformation = 2;
+  }
+}
+
+message SubstraitTransformationV2 {
+  bytes substrait_plan = 1;
+  bytes ibis_function = 2;
+}

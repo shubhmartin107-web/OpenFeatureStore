@@ -1,0 +1,43 @@
+syntax = "proto3";
+package feast.core;
+
+message FileFormat {
+  oneof format {
+    ParquetFormat parquet_format = 1;
+  }
+  message ParquetFormat {}
+}
+
+message StreamFormat {
+  message ProtoFormat { string class_path = 1; }
+  message AvroFormat { string schema_json = 1; }
+  message JsonFormat { string schema_json = 1; }
+  oneof format {
+    AvroFormat avro_format = 1;
+    ProtoFormat proto_format = 2;
+    JsonFormat json_format = 3;
+  }
+}
+
+message TableFormat {
+  message IcebergFormat {
+    string catalog = 1;
+    string namespace = 2;
+    map<string, string> properties = 3;
+  }
+  message DeltaFormat {
+    string checkpoint_location = 1;
+    map<string, string> properties = 2;
+  }
+  message HudiFormat {
+    string table_type = 1;
+    string record_key = 2;
+    string precombine_field = 3;
+    map<string, string> properties = 4;
+  }
+  oneof format {
+    IcebergFormat iceberg_format = 1;
+    DeltaFormat delta_format = 2;
+    HudiFormat hudi_format = 3;
+  }
+}

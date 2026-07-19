@@ -1,0 +1,55 @@
+syntax = "proto3";
+package feast.core;
+
+import "google/protobuf/timestamp.proto";
+import "feast/core/FeatureView.proto";
+import "feast/core/FeatureViewProjection.proto";
+import "feast/core/Feature.proto";
+import "feast/core/DataSource.proto";
+import "feast/core/Transformation.proto";
+import "feast/core/Aggregation.proto";
+
+message OnDemandFeatureView {
+  OnDemandFeatureViewSpec spec = 1;
+  OnDemandFeatureViewMeta meta = 2;
+}
+
+message OnDemandFeatureViewSpec {
+  string name = 1;
+  string project = 2;
+  repeated FeatureSpecV2 features = 3;
+  map<string, OnDemandSource> sources = 4;
+  FeatureTransformationV2 feature_transformation = 10;
+  string description = 6;
+  map<string, string> tags = 7;
+  string owner = 8;
+  string mode = 11;
+  bool write_to_online_store = 12;
+  repeated string entities = 13;
+  repeated FeatureSpecV2 entity_columns = 14;
+  bool singleton = 15;
+  repeated Aggregation aggregations = 16;
+  string version = 17;
+  string org = 18;
+  bool disabled = 19;
+}
+
+message OnDemandFeatureViewMeta {
+  google.protobuf.Timestamp created_timestamp = 1;
+  google.protobuf.Timestamp last_updated_timestamp = 2;
+  int32 current_version_number = 3;
+  string version_id = 4;
+  FeatureViewState state = 5;
+}
+
+message OnDemandSource {
+  oneof source {
+    FeatureView feature_view = 1;
+    FeatureViewProjection feature_view_projection = 3;
+    DataSource request_data_source = 2;
+  }
+}
+
+message OnDemandFeatureViewList {
+  repeated OnDemandFeatureView on_demand_feature_views = 1;
+}

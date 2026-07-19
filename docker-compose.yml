@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  ofs-server:
+    build: .
+    ports:
+      - "8080:8080"   # REST API
+      - "8081:8081"   # gRPC API
+    volumes:
+      - ./ofs.yaml:/etc/ofs/ofs.yaml:ro
+      - ofs-data:/data/ofs
+    environment:
+      - RUST_LOG=info
+      - OFS_REGISTRY_PATH=/data/ofs/registry.db
+      - OFS_ONLINE_STORE_PATH=/data/ofs/online.db
+      - OFS_OFFLINE_STORE_PATH=/data/ofs/offline.db
+    depends_on:
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=ofs
+      - POSTGRES_PASSWORD=ofs_secret
+      - POSTGRES_DB=ofs
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ofs"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "443:443"   # HTTPS (TLS termination)
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - ofs-server
+    restart: unless-stopped
+
+volumes:
+  ofs-data:
+  redis-data:
+  pg-data:

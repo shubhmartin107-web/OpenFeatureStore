@@ -1,0 +1,19 @@
+[package]
+name = "ofs-online-store"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "SQLite + Redis online stores for OpenFeatureStore"
+
+[dependencies]
+ofs-core = { path = "../ofs-core" }
+sqlx.workspace = true
+redis.workspace = true
+hex.workspace = true
+tokio.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+tracing.workspace = true
+anyhow.workspace = true
+serde_json.workspace = true
+

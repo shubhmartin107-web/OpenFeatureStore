@@ -1,0 +1,15 @@
+[package]
+name = "ofs-proto"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description.workspace = true
+
+[build-dependencies]
+tonic-build = "0.12"
+
+[dependencies]
+prost.workspace = true
+prost-types.workspace = true
+serde.workspace = true
+tonic.workspace = true

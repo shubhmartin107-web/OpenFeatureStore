@@ -1,0 +1,16 @@
+[package]
+name = "ofs-config"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Shared configuration schema, YAML parsing, env-var interpolation, and secrets management"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+serde_yaml = "0.9"
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+shellexpand = "3"
+dirs = "6"

@@ -1,0 +1,121 @@
+syntax = "proto3";
+package feast.core;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "feast/core/DataFormat.proto";
+import "feast/core/Feature.proto";
+
+message DataSource {
+  enum SourceType {
+    INVALID = 0;
+    BATCH_FILE = 1;
+    BATCH_SNOWFLAKE = 8;
+    BATCH_BIGQUERY = 2;
+    BATCH_REDSHIFT = 5;
+    STREAM_KAFKA = 3;
+    STREAM_KINESIS = 4;
+    CUSTOM_SOURCE = 6;
+    REQUEST_SOURCE = 7;
+    PUSH_SOURCE = 9;
+    BATCH_TRINO = 10;
+    BATCH_SPARK = 11;
+    BATCH_ATHENA = 12;
+  }
+
+  string name = 20;
+  string project = 21;
+  string description = 23;
+  map<string, string> tags = 24;
+  string owner = 25;
+
+  SourceType type = 1;
+  map<string, string> field_mapping = 2;
+  string timestamp_field = 3;
+  string date_partition_column = 4;
+  string created_timestamp_column = 5;
+  string timestamp_field_type = 28;
+  string data_source_class_type = 17;
+  DataSource batch_source = 26;
+  SourceMeta meta = 50;
+
+  message SourceMeta {
+    google.protobuf.Timestamp earliest_event_timestamp = 1;
+    google.protobuf.Timestamp latest_event_timestamp = 2;
+    google.protobuf.Timestamp created_timestamp = 3;
+    google.protobuf.Timestamp last_updated_timestamp = 4;
+  }
+
+  oneof options {
+    FileOptions file_options = 11;
+    BigQueryOptions bigquery_options = 12;
+    KafkaOptions kafka_options = 13;
+    KinesisOptions kinesis_options = 14;
+    RedshiftOptions redshift_options = 15;
+    RequestDataOptions request_data_options = 18;
+    CustomSourceOptions custom_options = 16;
+    SnowflakeOptions snowflake_options = 19;
+    PushOptions push_options = 22;
+    SparkOptions spark_options = 27;
+    TrinoOptions trino_options = 30;
+    AthenaOptions athena_options = 35;
+  }
+
+  message FileOptions {
+    FileFormat file_format = 1;
+    string uri = 2;
+    string s3_endpoint_override = 3;
+  }
+  message BigQueryOptions {
+    string table = 1;
+    string query = 2;
+  }
+  message KafkaOptions {
+    string kafka_bootstrap_servers = 1;
+    string topic = 2;
+    StreamFormat message_format = 3;
+    google.protobuf.Duration watermark_delay_threshold = 4;
+  }
+  message KinesisOptions {
+    string region = 1;
+    string stream_name = 2;
+    StreamFormat record_format = 3;
+  }
+  message RedshiftOptions {
+    string table = 1;
+    string query = 2;
+    string schema = 3;
+    string database = 4;
+  }
+  message SnowflakeOptions {
+    string table = 1;
+    string query = 2;
+    string schema = 3;
+    string database = 4;
+  }
+  message SparkOptions {
+    string table = 1;
+    string query = 2;
+    string path = 3;
+    string file_format = 4;
+    string date_partition_column_format = 5;
+    TableFormat table_format = 6;
+  }
+  message TrinoOptions {
+    string table = 1;
+    string query = 2;
+  }
+  message AthenaOptions {
+    string table = 1;
+    string query = 2;
+    string database = 3;
+    string data_source = 4;
+  }
+  message CustomSourceOptions { bytes configuration = 1; }
+  message RequestDataOptions { repeated FeatureSpecV2 schema = 3; }
+  message PushOptions {}
+}
+
+message DataSourceList {
+  repeated DataSource datasources = 1;
+}

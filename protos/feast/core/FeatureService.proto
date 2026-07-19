@@ -1,0 +1,55 @@
+syntax = "proto3";
+package feast.core;
+
+import "google/protobuf/timestamp.proto";
+import "feast/core/FeatureViewProjection.proto";
+
+message FeatureService {
+  FeatureServiceSpec spec = 1;
+  FeatureServiceMeta meta = 2;
+}
+
+message FeatureServiceSpec {
+  string name = 1;
+  string project = 2;
+  repeated FeatureViewProjection features = 3;
+  map<string, string> tags = 4;
+  string description = 5;
+  string owner = 6;
+  LoggingConfig logging_config = 7;
+  bool precompute_online = 8;
+}
+
+message FeatureServiceMeta {
+  google.protobuf.Timestamp created_timestamp = 1;
+  google.protobuf.Timestamp last_updated_timestamp = 2;
+}
+
+message LoggingConfig {
+  float sample_rate = 1;
+  oneof destination {
+    FileDestination file_destination = 3;
+    BigQueryDestination bigquery_destination = 4;
+    RedshiftDestination redshift_destination = 5;
+    SnowflakeDestination snowflake_destination = 6;
+    CustomDestination custom_destination = 7;
+    AthenaDestination athena_destination = 8;
+  }
+  message FileDestination {
+    string path = 1;
+    string s3_endpoint_override = 2;
+    repeated string partition_by = 3;
+  }
+  message BigQueryDestination { string table_ref = 1; }
+  message RedshiftDestination { string table_name = 1; }
+  message AthenaDestination { string table_name = 1; }
+  message SnowflakeDestination { string table_name = 1; }
+  message CustomDestination {
+    string kind = 1;
+    map<string, string> config = 2;
+  }
+}
+
+message FeatureServiceList {
+  repeated FeatureService feature_services = 1;
+}

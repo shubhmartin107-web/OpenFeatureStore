@@ -1,0 +1,29 @@
+syntax = "proto3";
+package feast.core;
+
+import "feast/types/Value.proto";
+import "google/protobuf/timestamp.proto";
+
+message Entity {
+  EntitySpecV2 spec = 1;
+  EntityMeta meta = 2;
+}
+
+message EntitySpecV2 {
+  string name = 1;
+  string project = 9;
+  feast.types.ValueType.Enum value_type = 2;
+  string description = 3;
+  string join_key = 4;
+  map<string, string> tags = 8;
+  string owner = 10;
+}
+
+message EntityMeta {
+  google.protobuf.Timestamp created_timestamp = 1;
+  google.protobuf.Timestamp last_updated_timestamp = 2;
+}
+
+message EntityList {
+  repeated Entity entities = 1;
+}

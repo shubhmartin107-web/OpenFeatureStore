@@ -1,0 +1,47 @@
+[package]
+name = "ofs-serving"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "gRPC + REST serving API for OpenFeatureStore"
+
+[dependencies]
+ofs-core = { path = "../ofs-core" }
+ofs-proto = { path = "../ofs-proto" }
+ofs-config = { path = "../ofs-config" }
+ofs-api-types = { path = "../ofs-api-types" }
+ofs-observability = { path = "../ofs-observability" }
+ofs-auth = { path = "../ofs-auth" }
+ofs-lifecycle = { path = "../ofs-lifecycle" }
+
+tokio.workspace = true
+tonic.workspace = true
+axum.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+governor.workspace = true
+utoipa.workspace = true
+utoipa-swagger-ui.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+chrono.workspace = true
+prometheus.workspace = true
+tokio-util.workspace = true
+futures-util.workspace = true
+hyper.workspace = true
+http.workspace = true
+hex.workspace = true
+prost.workspace = true
+prost-types.workspace = true
+
+[dev-dependencies]
+ofs-registry = { path = "../ofs-registry" }
+ofs-online-store = { path = "../ofs-online-store" }
+ofs-offline-store = { path = "../ofs-offline-store" }
+sqlx = { workspace = true, features = ["runtime-tokio", "sqlite"] }
+serde_yaml = "0.9"
+tempfile = "3"
+

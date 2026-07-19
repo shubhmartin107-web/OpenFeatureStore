@@ -1,0 +1,12 @@
+[package]
+name = "ofs-api-types"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "API error codes, response envelope, request validation types for the serving layer"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true

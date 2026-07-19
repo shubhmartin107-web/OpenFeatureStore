@@ -1,0 +1,18 @@
+syntax = "proto3";
+package feast.core;
+
+import "feast/types/Value.proto";
+
+message FeatureSpecV2 {
+  string name = 1;
+  feast.types.ValueType.Enum value_type = 2;
+  map<string, string> tags = 3;
+  string description = 4;
+  bool vector_index = 5;
+  string vector_search_metric = 6;
+  int32 vector_length = 7;
+}
+
+message FeatureList {
+  repeated string val = 1;
+}

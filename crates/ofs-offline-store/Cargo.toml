@@ -1,0 +1,17 @@
+[package]
+name = "ofs-offline-store"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "DuckDB-based offline store for OpenFeatureStore"
+
+[dependencies]
+ofs-core = { path = "../ofs-core" }
+duckdb = { workspace = true }
+arrow = { workspace = true, features = ["ipc"] }
+tokio.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+tracing.workspace = true
+anyhow.workspace = true
+serde_json.workspace = true

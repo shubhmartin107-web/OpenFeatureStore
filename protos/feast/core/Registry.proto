@@ -1,0 +1,57 @@
+syntax = "proto3";
+package feast.core;
+
+import "feast/core/Entity.proto";
+import "feast/core/FeatureService.proto";
+import "feast/core/FeatureView.proto";
+import "feast/core/OnDemandFeatureView.proto";
+import "feast/core/StreamFeatureView.proto";
+import "feast/core/DataSource.proto";
+import "google/protobuf/timestamp.proto";
+
+message ProjectSpec {
+  string name = 1;
+  string description = 2;
+  map<string, string> tags = 3;
+  string owner = 4;
+}
+
+message ProjectMeta {
+  google.protobuf.Timestamp created_timestamp = 1;
+  google.protobuf.Timestamp last_updated_timestamp = 2;
+}
+
+message Project {
+  ProjectSpec spec = 1;
+  ProjectMeta meta = 2;
+}
+
+message Infra {
+  repeated InfraObject infra_objects = 1;
+}
+
+message InfraObject {
+  string infra_object_class_type = 1;
+  oneof infra_object {
+    SqliteTable sqlite_table = 4;
+  }
+}
+
+message SqliteTable {
+  string name = 1;
+  string project = 2;
+}
+
+message Registry {
+  repeated Entity entities = 1;
+  repeated FeatureView feature_views = 6;
+  repeated DataSource data_sources = 12;
+  repeated OnDemandFeatureView on_demand_feature_views = 8;
+  repeated StreamFeatureView stream_feature_views = 14;
+  repeated FeatureService feature_services = 7;
+  Infra infra = 10;
+  string registry_schema_version = 3;
+  string version_id = 4;
+  google.protobuf.Timestamp last_updated = 5;
+  repeated Project projects = 17;
+}

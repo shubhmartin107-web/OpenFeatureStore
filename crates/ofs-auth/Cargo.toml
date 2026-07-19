@@ -1,0 +1,20 @@
+[package]
+name = "ofs-auth"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Authentication and authorization for OpenFeatureStore (API keys, JWT/OIDC, RBAC)"
+
+[dependencies]
+ofs-core = { path = "../ofs-core" }
+ofs-config = { path = "../ofs-config" }
+tokio = { workspace = true, features = ["sync"] }
+tracing = { workspace = true }
+chrono = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+http = { workspace = true }
+axum = { workspace = true }
+jsonwebtoken.workspace = true
+reqwest.workspace = true

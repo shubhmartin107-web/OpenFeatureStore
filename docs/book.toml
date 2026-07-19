@@ -1,0 +1,11 @@
+[book]
+title = "OpenFeatureStore Documentation"
+description = "Offline+Online Feature Store with point-in-time correctness"
+authors = ["OpenFeatureStore Contributors"]
+language = "en"
+
+[output.html]
+no-section-label = true
+git-repository-url = "https://github.com/anomalyco/openfeaturestore"
+edit-url-template = "https://github.com/anomalyco/openfeaturestore/edit/main/docs/src/{path}"
+site-url = "/openfeaturestore/"

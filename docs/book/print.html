@@ -1,0 +1,2000 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>OpenFeatureStore Documentation</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Offline+Online Feature Store with point-in-time correctness">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">OpenFeatureStore Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/anomalyco/openfeaturestore" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="openfeaturestore"><a class="header" href="#openfeaturestore">OpenFeatureStore</a></h1>
+<p><strong>OpenFeatureStore</strong> is a high-performance, Feast-compatible offline and online feature store
+built in Rust. It provides point-in-time correct feature retrieval via ASOF joins, SQLite-backed
+registry and online storage, DuckDB-powered offline analytics, and a materialization engine for
+serving feature data from offline to online stores.</p>
+<h2 id="why-openfeaturestore"><a class="header" href="#why-openfeaturestore">Why OpenFeatureStore?</a></h2>
+<ul>
+<li><strong>Performance</strong> — Written in Rust with zero-cost abstractions and async I/O</li>
+<li><strong>Feast Compatible</strong> — Protobuf definitions match Feast 0.42+ schema</li>
+<li><strong>Point-in-Time Correctness</strong> — ASOF joins ensure features are joined at the right time</li>
+<li><strong>Offline/Online Architecture</strong> — Batch compute on DuckDB, low-latency serving from SQLite or Redis</li>
+<li><strong>Materialization Engine</strong> — Bridges offline and online stores with incremental updates</li>
+<li><strong>Python SDK</strong> — Native Python bindings via PyO3</li>
+<li><strong>CLI &amp; MCP</strong> — Command-line tool and MCP server for opencode integration</li>
+</ul>
+<h2 id="architecture-overview"><a class="header" href="#architecture-overview">Architecture Overview</a></h2>
+<pre><code>                 ┌──────────────────────┐
+                 │   Python SDK / CLI   │
+                 │   MCP Server         │
+                 └──────────┬───────────┘
+                            │
+              ┌─────────────┴─────────────┐
+              │    ofs-core (Traits)      │
+              │  Registry | OfflineStore  │
+              │  OnlineStore | Materialize│
+              └──────┬──────────┬─────────┘
+                     │          │
+          ┌──────────┴──┐  ┌───┴────────────┐
+          │ ofs-registry │  │ ofs-offline    │
+          │  (SQLite)    │  │  (DuckDB)      │
+          └──────────────┘  └────────────────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │ ofs-online              │
+                    │  (SQLite | Redis)       │
+                    └─────────────────────────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │ ofs-materialization     │
+                    │  (Offline → Online)     │
+                    └─────────────────────────┘
+</code></pre>
+<h2 id="quick-links"><a class="header" href="#quick-links">Quick Links</a></h2>
+<ul>
+<li><a href="quick_start.html">Quick Start</a> — Get up and running in 5 minutes</li>
+<li><a href="installation.html">Installation</a> — Build and install instructions</li>
+<li><a href="https://github.com/anomalyco/openfeaturestore">GitHub Repository</a></li>
+<li><a href="https://docs.rs/openfeaturestore">Crate Documentation</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>Rust 1.85+ (edition 2024)</li>
+<li>Python 3.8+ (for Python SDK)</li>
+<li>DuckDB system library or <code>bundled</code> feature</li>
+</ul>
+<h2 id="using-the-python-sdk"><a class="header" href="#using-the-python-sdk">Using the Python SDK</a></h2>
+<pre><code class="language-bash"># Install from source
+cd crates/ofs-python
+pip install maturin
+maturin develop --release
+
+# Use the FeatureStore
+python -c "
+from ofs import FeatureStore
+
+store = FeatureStore.in_memory()
+
+# Register an entity
+store.apply_entity('user', join_keys=['user_id'])
+
+# Register a feature view
+store.apply_feature_view('user_features',
+    entities=['user'],
+    features=['age', 'gender', 'signup_date'])
+
+# List what we've created
+print('Entities:', store.list_entities())
+print('Feature Views:', store.list_feature_views())
+"
+</code></pre>
+<h2 id="using-the-cli"><a class="header" href="#using-the-cli">Using the CLI</a></h2>
+<pre><code class="language-bash"># Initialize a store
+ofs init --project demo
+
+# Register an entity
+ofs apply-entity user --join-keys user_id
+
+# Register a feature view
+ofs apply-feature-view user_features \
+    --entities user \
+    --features age,gender,signup_date
+
+# List resources
+ofs list-entities
+ofs list-feature-views
+</code></pre>
+<h2 id="using-rust-directly"><a class="header" href="#using-rust-directly">Using Rust directly</a></h2>
+<pre><pre class="playground"><code class="language-rust">use ofs_registry::SqlRegistry;
+use ofs_core::types::Entity;
+
+#[tokio::main]
+async fn main() -&gt; anyhow::Result&lt;()&gt; {
+    let registry = SqlRegistry::in_memory().await?;
+
+    let entity = Entity::new("user", vec!["user_id".to_string()]);
+    registry.apply_entity(&amp;entity, "my_project").await?;
+
+    let found = registry.get_entity("user", "my_project").await?;
+    println!("Found: {:?}", found);
+    Ok(())
+}</code></pre></pre>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<ul>
+<li>Learn about <a href="concepts/entities.html">Core Concepts</a></li>
+<li>Explore the <a href="python/getting_started.html">Python SDK</a></li>
+<li>Configure for <a href="operations/deployment.html">Production</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<h2 id="from-source"><a class="header" href="#from-source">From Source</a></h2>
+<h3 id="prerequisites-1"><a class="header" href="#prerequisites-1">Prerequisites</a></h3>
+<ul>
+<li><strong>Rust toolchain</strong>: Install via <a href="https://rustup.rs/">rustup</a>
+<pre><code class="language-bash">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup default stable
+</code></pre>
+</li>
+<li><strong>Protobuf compiler</strong> (protoc): Required for code generation
+<pre><code class="language-bash"># Ubuntu/Debian
+sudo apt install protobuf-compiler
+
+# macOS
+brew install protobuf
+</code></pre>
+</li>
+<li><strong>DuckDB library</strong>: Either system-installed or compiled via <code>bundled</code> feature
+<pre><code class="language-bash"># Ubuntu/Debian (system library, faster build)
+sudo apt install libduckdb-dev
+
+# Or use bundled (compiles DuckDB from source, ~10min)
+# Just build without --no-default-features
+</code></pre>
+</li>
+</ul>
+<h3 id="build-workspace"><a class="header" href="#build-workspace">Build Workspace</a></h3>
+<pre><code class="language-bash">git clone https://github.com/anomalyco/openfeaturestore.git
+cd openfeaturestore
+
+# Build all crates
+cargo build --workspace
+
+# Run tests (requires DuckDB library)
+export DUCKDB_LIB_DIR=/path/to/duckdb/lib
+export LD_LIBRARY_PATH=$DUCKDB_LIB_DIR:$LD_LIBRARY_PATH
+cargo test --workspace
+</code></pre>
+<h3 id="python-sdk"><a class="header" href="#python-sdk">Python SDK</a></h3>
+<pre><code class="language-bash">cd crates/ofs-python
+pip install maturin
+
+# Development install
+maturin develop --release
+
+# Or build a wheel
+maturin build --release
+pip install target/wheels/openfeaturestore-*.whl
+</code></pre>
+<h2 id="docker"><a class="header" href="#docker">Docker</a></h2>
+<pre><code class="language-dockerfile">FROM rust:latest AS builder
+WORKDIR /app
+COPY . .
+RUN cargo build --release
+
+FROM debian:bookworm-slim
+COPY --from=builder /app/target/release/ofs /usr/local/bin/
+CMD ["ofs"]
+</code></pre>
+<h2 id="verify-installation"><a class="header" href="#verify-installation">Verify Installation</a></h2>
+<pre><code class="language-bash"># Check Rust crates
+cargo doc --workspace --no-deps --open
+
+# Check Python package
+python -c "import ofs; print(ofs.__version__)"
+
+# Check CLI
+ofs --help
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="architecture-overview-1"><a class="header" href="#architecture-overview-1">Architecture Overview</a></h1>
+<p>OpenFeatureStore follows a layered architecture inspired by Feast, with clean trait
+boundaries between each component.</p>
+<h2 id="layers"><a class="header" href="#layers">Layers</a></h2>
+<h3 id="1-core-layer-ofs-core"><a class="header" href="#1-core-layer-ofs-core">1. Core Layer (<code>ofs-core</code>)</a></h3>
+<p>Defines the fundamental abstractions:</p>
+<ul>
+<li><strong>Types</strong> — Domain models: <code>Entity</code>, <code>FeatureView</code>, <code>DataSource</code>, <code>FeatureService</code>,
+<code>EntityKey</code>, <code>RepoConfig</code></li>
+<li><strong>Traits</strong> — Store interfaces: <code>Registry</code>, <code>OfflineStore</code>, <code>OnlineStore</code>,
+<code>MaterializationEngine</code></li>
+<li><strong>Value Types</strong> — Feast-compatible type system (<code>ValueType</code>, <code>FeastType</code>)</li>
+<li><strong>Entity Key</strong> — Serialization/deserialization of composite entity keys (Feast v3 format)</li>
+<li><strong>Errors</strong> — Unified error types across all crates</li>
+</ul>
+<h3 id="2-registry-layer-ofs-registry"><a class="header" href="#2-registry-layer-ofs-registry">2. Registry Layer (<code>ofs-registry</code>)</a></h3>
+<p>Manages feature store metadata:</p>
+<ul>
+<li>SQLite-backed persistence of entities, feature views, data sources, feature services</li>
+<li>Full CRUD operations scoped by project</li>
+<li>Materialization interval tracking</li>
+<li>Proto-based serialization (Feast SQL registry pattern)</li>
+</ul>
+<h3 id="3-offline-store-ofs-offline-store"><a class="header" href="#3-offline-store-ofs-offline-store">3. Offline Store (<code>ofs-offline-store</code>)</a></h3>
+<p>Handles batch feature computation:</p>
+<ul>
+<li>DuckDB-powered SQL query builder</li>
+<li>ASOF JOIN for point-in-time correct feature retrieval</li>
+<li>Returns <code>RetrievalJob</code> with SQL query and schema metadata</li>
+</ul>
+<h3 id="4-online-store-ofs-online-store"><a class="header" href="#4-online-store-ofs-online-store">4. Online Store (<code>ofs-online-store</code>)</a></h3>
+<p>Low-latency feature serving:</p>
+<ul>
+<li><strong>SQLiteOnlineStore</strong> — Per-feature-view tables with <code>INSERT OR REPLACE</code></li>
+<li><strong>RedisOnlineStore</strong> — Hash-based storage with TTL support</li>
+</ul>
+<h3 id="5-materialization-engine-ofs-materialization"><a class="header" href="#5-materialization-engine-ofs-materialization">5. Materialization Engine (<code>ofs-materialization</code>)</a></h3>
+<p>Bridges offline and online stores:</p>
+<ul>
+<li>Pulls feature data from offline store (DuckDB)</li>
+<li>Iterates results row-by-row</li>
+<li>Writes to online store in batches of 100</li>
+</ul>
+<h2 id="crate-dependency-graph"><a class="header" href="#crate-dependency-graph">Crate Dependency Graph</a></h2>
+<pre><code>ofs-proto (protobuf definitions)
+    ↓
+ofs-core (traits, types, errors)
+    ↓
+ofs-registry → ofs-core
+ofs-offline-store → ofs-core
+ofs-online-store → ofs-core
+    ↓
+ofs-materialization → ofs-core + ofs-registry + ofs-offline + ofs-online
+    ↓
+ofs-python (PyO3 bindings) → all of the above
+</code></pre>
+<h2 id="key-design-decisions"><a class="header" href="#key-design-decisions">Key Design Decisions</a></h2>
+<ul>
+<li><strong>Trait-based</strong> — All stores implement async traits for testability and swap-ability</li>
+<li><strong>Proto serialization</strong> — Registry stores serialized <code>Registry</code> protobuf blobs in SQLite,
+matching the Feast SQL registry pattern</li>
+<li><strong>Deferred execution</strong> — Offline store returns <code>RetrievalJob</code> with SQL string,
+deferring DuckDB execution to the materialization engine</li>
+<li><strong>Batch writes</strong> — Online store writes are batched in chunks of 100 records</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="data-flow"><a class="header" href="#data-flow">Data Flow</a></h1>
+<p>This page describes how data flows through the feature store during materialization and serving.</p>
+<h2 id="materialization-flow"><a class="header" href="#materialization-flow">Materialization Flow</a></h2>
+<p>The materialization engine bridges the offline and online stores:</p>
+<pre><code>┌──────────┐    pull_features()     ┌──────────┐
+│  DuckDB   │ ◄─────────────────── │ Registry  │
+│ Offline   │                       │ (SQLite)  │
+│ Store    │                        └─────┬─────┘
+└────┬─────┘                              │
+     │                                     │ get_feature_views()
+     │ SQL query                           │
+     ▼                                     ▼
+┌──────────┐                    ┌──────────────────┐
+│ DuckDB   │                    │ Materialization   │
+│ Query    │                    │ Engine            │
+│ Result   │ ──── rows ───────► │                   │
+└──────────┘                    └────────┬──────────┘
+                                         │
+                               online_write_batch()
+                                         │
+                                         ▼
+                                  ┌──────────┐
+                                  │  SQLite   │
+                                  │  Online   │
+                                  │  Store    │
+                                  └──────────┘
+</code></pre>
+<h3 id="steps"><a class="header" href="#steps">Steps</a></h3>
+<ol>
+<li>Registry returns all feature views for a project</li>
+<li>Engine calls <code>offline_store.pull_features(fv, start, end)</code> → gets SQL query</li>
+<li>Engine executes the DuckDB SQL query directly</li>
+<li>For each row, converts to <code>OnlineWriteRecord</code></li>
+<li>Writes records to online store in batches of 100</li>
+</ol>
+<h2 id="serving-flow"><a class="header" href="#serving-flow">Serving Flow</a></h2>
+<p>When features are requested for online serving:</p>
+<pre><code>Client ──► online_read(entity_keys, features)
+                  │
+                  ▼
+         ┌────────────────┐
+         │  Online Store   │
+         │  (SQLite/Redis) │
+         └───────┬────────┘
+                 │
+                 ▼
+         Feature values returned
+</code></pre>
+<h3 id="point-in-time-correctness"><a class="header" href="#point-in-time-correctness">Point-in-Time Correctness</a></h3>
+<p>The offline store uses ASOF joins to ensure features are joined at the correct
+point in time:</p>
+<pre><code class="language-sql">SELECT *
+FROM entity_dataframe ef
+ASOF JOIN feature_table fv
+  ON ef.entity_key = fv.entity_key
+ AND ef.timestamp &gt;= fv.timestamp
+</code></pre>
+<p>This guarantees that for each entity row, only features that were valid at
+(or before) the entity's timestamp are included — never future features.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="storage-layer"><a class="header" href="#storage-layer">Storage Layer</a></h1>
+<h2 id="registry-storage-sqlite"><a class="header" href="#registry-storage-sqlite">Registry Storage (SQLite)</a></h2>
+<p>The registry stores metadata in a SQLite database using the Feast SQL registry pattern:</p>
+<ul>
+<li>Single <code>registries</code> table with columns: <code>project</code>, <code>name</code>, <code>last_synced</code>, <code>registry_proto_bytes</code></li>
+<li>Each row stores a serialized protobuf <code>Registry</code> for a project</li>
+<li>On read, the proto is deserialized and domain types are extracted</li>
+<li>On write, the proto is updated and re-serialized</li>
+</ul>
+<pre><code>Table: registries
+┌─────────┬──────────┬──────────────┬──────────────────────┐
+│ project │  name    │ last_synced  │ registry_proto_bytes │
+├─────────┼──────────┼──────────────┤──────────────────────┤
+│ default │ default  │ 1700000000   │ &lt;protobuf blob&gt;      │
+│ prod    │ default  │ 1700000000   │ &lt;protobuf blob&gt;      │
+└─────────┴──────────┴──────────────┴──────────────────────┘
+</code></pre>
+<h2 id="offline-store-duckdb"><a class="header" href="#offline-store-duckdb">Offline Store (DuckDB)</a></h2>
+<p>The offline store does not maintain persistent storage. Instead:</p>
+<ul>
+<li>It builds SQL queries that reference external data sources (Parquet files, etc.)</li>
+<li>The actual data querying is deferred to the materialization engine</li>
+<li>DuckDB's ASOF JOIN capability provides point-in-time correctness</li>
+</ul>
+<pre><code class="language-sql">-- Example generated query
+SELECT
+  entity_df.entity_key,
+  entity_df.event_timestamp,
+  feature_table.feature_value
+FROM parquet_read('/data/entities.parquet') entity_df
+ASOF JOIN parquet_read('/data/features.parquet') feature_table
+  ON entity_df.entity_key = feature_table.entity_key
+ AND entity_df.event_timestamp &gt;= feature_table.event_timestamp
+</code></pre>
+<h2 id="online-store"><a class="header" href="#online-store">Online Store</a></h2>
+<h3 id="sqlite-online-store"><a class="header" href="#sqlite-online-store">SQLite Online Store</a></h3>
+<p>Per-feature-view tables with row-level storage:</p>
+<pre><code class="language-sql">CREATE TABLE IF NOT EXISTS fv__user_features (
+    entity_key   BLOB PRIMARY KEY,
+    feature_name TEXT NOT NULL,
+    value        BLOB,
+    event_ts     TIMESTAMP,
+    created_ts   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</code></pre>
+<ul>
+<li><code>INSERT OR REPLACE</code> semantics for upserts</li>
+<li><code>entity_key</code> is the serialized Feast v3 entity key</li>
+</ul>
+<h3 id="redis-online-store"><a class="header" href="#redis-online-store">Redis Online Store</a></h3>
+<p>Hash-based storage with entity key as the key:</p>
+<pre><code>Redis key format: {project}:{feature_view}:{entity_key_hex}
+
+Hash fields:
+  feature_name_1 ──► serialized_value_1
+  feature_name_2 ──► serialized_value_2
+  ...
+</code></pre>
+<ul>
+<li>Configurable TTL for each feature view</li>
+<li>Connection pooling via <code>redis-rs</code> connection manager</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
+<p>An <strong>Entity</strong> is a domain object that has features associated with it. Examples include
+a user, a transaction, a product, or a geographic location.</p>
+<h2 id="definition"><a class="header" href="#definition">Definition</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct Entity {
+    pub name: String,
+    pub project: String,
+    pub join_keys: Vec&lt;String&gt;,
+    pub value_type: ValueType,
+    pub description: String,
+    pub tags: HashMap&lt;String, String&gt;,
+    pub owner: String,
+    pub created_timestamp: Option&lt;DateTime&lt;Utc&gt;&gt;,
+    pub last_updated_timestamp: Option&lt;DateTime&lt;Utc&gt;&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<pre><code class="language-python">from ofs import Entity
+
+entity = Entity("user", join_keys=["user_id"])
+entity.set_description("A platform user")
+entity.set_owner("data-team")
+
+store.apply_entity(entity, project="my_project")
+</code></pre>
+<h2 id="key-points"><a class="header" href="#key-points">Key Points</a></h2>
+<ul>
+<li><code>join_keys</code> defines which columns are used to uniquely identify an entity</li>
+<li>An entity can have multiple join keys for composite keys</li>
+<li>Entities are scoped within a project</li>
+<li>The <code>value_type</code> field indicates the primary key's type</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="feature-views"><a class="header" href="#feature-views">Feature Views</a></h1>
+<p>A <strong>FeatureView</strong> defines a group of features that are computed together from a data source.
+It specifies how features are retrieved and materialized.</p>
+<h2 id="definition-1"><a class="header" href="#definition-1">Definition</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FeatureView {
+    pub name: String,
+    pub project: String,
+    pub entities: Vec&lt;String&gt;,        // Referenced entity names
+    pub features: Vec&lt;Feature&gt;,       // Feature definitions
+    pub tags: HashMap&lt;String, String&gt;,
+    pub ttl: Option&lt;Duration&gt;,        // Time-to-live for online serving
+    pub batch_source: Option&lt;DataSource&gt;,
+    pub stream_source: Option&lt;DataSource&gt;,
+    pub online: bool,                  // Serve from online store
+    pub offline: bool,                 // Serve from offline store
+    pub materialization_intervals: Vec&lt;(DateTime&lt;Utc&gt;, DateTime&lt;Utc&gt;)&gt;,
+    pub state: FeatureViewState,
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
+<pre><code class="language-python">from ofs import FeatureView, Feature
+
+fv = FeatureView("user_features")
+fv.add_entity("user")
+fv.add_feature(Feature("age", 3))      # ValueType.Int32
+fv.add_feature(Feature("gender", 2))   # ValueType.String
+fv.set_ttl_secs(86400)                 # 24 hour TTL
+
+store.apply_feature_view(fv, project="my_project")
+</code></pre>
+<h2 id="states"><a class="header" href="#states">States</a></h2>
+<p>Feature views have a lifecycle with the following states:</p>
+<ul>
+<li><code>Created</code> — Defined but not yet materialized</li>
+<li><code>Generated</code> — Offline data available</li>
+<li><code>Materializing</code> — Currently being materialized to online store</li>
+<li><code>AvailableOnline</code> — Ready for online serving</li>
+</ul>
+<h2 id="ttl-time-to-live"><a class="header" href="#ttl-time-to-live">TTL (Time-to-Live)</a></h2>
+<p>The TTL controls how long features are considered valid in the online store.
+When reading features, values older than the TTL are filtered out.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="data-sources"><a class="header" href="#data-sources">Data Sources</a></h1>
+<p>A <strong>DataSource</strong> describes where feature data originates. It specifies the physical
+location and format of the underlying data.</p>
+<h2 id="source-types"><a class="header" href="#source-types">Source Types</a></h2>
+<p>The following source types are supported:</p>
+<div class="table-wrapper"><table><thead><tr><th>Source Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>BatchFile</code></td><td>Files in Parquet, CSV, or Arrow format</td></tr>
+<tr><td><code>BatchBigQuery</code></td><td>Google BigQuery table or query</td></tr>
+<tr><td><code>StreamKafka</code></td><td>Apache Kafka topic</td></tr>
+<tr><td><code>StreamKinesis</code></td><td>Amazon Kinesis stream</td></tr>
+<tr><td><code>BatchRedshift</code></td><td>Amazon Redshift</td></tr>
+<tr><td><code>BatchSnowflake</code></td><td>Snowflake</td></tr>
+<tr><td><code>RequestSource</code></td><td>Request-time data (for on-demand FVs)</td></tr>
+<tr><td><code>PushSource</code></td><td>Pushed streaming data</td></tr>
+<tr><td><code>CustomSource</code></td><td>User-defined source</td></tr>
+</tbody></table>
+</div>
+<h2 id="options"><a class="header" href="#options">Options</a></h2>
+<p>Each source type has specific options:</p>
+<pre><code class="language-python">from ofs import DataSourceOptions
+
+# File source
+file_opts = DataSourceOptions.file(
+    path="/data/features.parquet",
+    file_format="parquet"
+)
+
+# A data source with file options
+from ofs import DataSource
+# Typically created via the registry or API
+</code></pre>
+<h2 id="field-mapping"><a class="header" href="#field-mapping">Field Mapping</a></h2>
+<p>Data sources support field mapping to rename columns:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DataSource {
+    pub name: String,
+    pub source_type: SourceType,
+    pub timestamp_field: Option&lt;String&gt;,
+    pub created_timestamp_column: Option&lt;String&gt;,
+    pub field_mapping: HashMap&lt;String, String&gt;,
+    pub date_partition_column: Option&lt;String&gt;,
+    pub options: DataSourceOptions,
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="feature-services"><a class="header" href="#feature-services">Feature Services</a></h1>
+<p>A <strong>FeatureService</strong> aggregates multiple feature views into a serving bundle,
+allowing clients to request features from multiple views in a single call.</p>
+<h2 id="definition-2"><a class="header" href="#definition-2">Definition</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FeatureService {
+    pub name: String,
+    pub project: String,
+    pub features: Vec&lt;FeatureViewProjection&gt;,
+    pub tags: HashMap&lt;String, String&gt;,
+    pub description: String,
+    pub owner: String,
+    pub logging_config: Option&lt;LoggingConfig&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
+<pre><code class="language-python">from ofs import FeatureService
+
+service = FeatureService("user_features_service")
+# Feature views are added via projections
+</code></pre>
+<h2 id="featureviewprojection"><a class="header" href="#featureviewprojection">FeatureViewProjection</a></h2>
+<p>A projection selects a subset of features from a feature view, with optional
+alias support:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct FeatureViewProjection {
+    pub feature_view_name: String,
+    pub feature_view_name_alias: Option&lt;String&gt;,
+    pub feature_columns: Vec&lt;Feature&gt;,
+    pub join_key_map: HashMap&lt;String, String&gt;,
+    // ...
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="entity-keys"><a class="header" href="#entity-keys">Entity Keys</a></h1>
+<p>An <strong>EntityKey</strong> uniquely identifies an entity instance. It supports composite keys
+(multiple join key values) and serializes to a byte representation for storage.</p>
+<h2 id="definition-3"><a class="header" href="#definition-3">Definition</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EntityKey {
+    pub join_keys: Vec&lt;String&gt;,
+    pub entity_values: Vec&lt;Vec&lt;u8&gt;&gt;,
+    pub value_types: Vec&lt;ValueType&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="serialization"><a class="header" href="#serialization">Serialization</a></h2>
+<p>Feast v3 entity key serialization is used for storage in the online store:</p>
+<pre><code class="language-python">from ofs import EntityKey
+
+key = EntityKey(["user_id"])
+key.add_value("user_id", b"12345", 2)  # ValueType.String
+
+serialized = key.serialize()
+# Returns Feast v3 format bytes
+
+# Deserialize
+restored = EntityKey.deserialize(serialized)
+</code></pre>
+<h2 id="key-format"><a class="header" href="#key-format">Key Format</a></h2>
+<p>The Feast v3 entity key format serializes multiple key-value pairs using a
+compact binary encoding:</p>
+<ul>
+<li>Prefix identifies the serialization version</li>
+<li>Each key-value pair is length-prefixed</li>
+<li>Values are encoded according to their value type</li>
+</ul>
+<h2 id="prefix-scanning"><a class="header" href="#prefix-scanning">Prefix Scanning</a></h2>
+<p>The <code>serialize_entity_key_prefix</code> function enables prefix-based scanning
+for partial key matches:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let prefix = serialize_entity_key_prefix(&amp;["user_id".to_string()]);
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="value-types"><a class="header" href="#value-types">Value Types</a></h1>
+<p>OpenFeatureStore uses a Feast-compatible value type system that supports
+primitives, lists, sets, and structured types.</p>
+<h2 id="primitive-types"><a class="header" href="#primitive-types">Primitive Types</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>ValueType</th><th>Description</th><th>Variant</th></tr></thead><tbody>
+<tr><td><code>Invalid</code></td><td>Unspecified</td><td>0</td></tr>
+<tr><td><code>Bytes</code></td><td>Raw bytes</td><td>1</td></tr>
+<tr><td><code>String</code></td><td>UTF-8 string</td><td>2</td></tr>
+<tr><td><code>Int32</code></td><td>32-bit integer</td><td>3</td></tr>
+<tr><td><code>Int64</code></td><td>64-bit integer</td><td>4</td></tr>
+<tr><td><code>Double</code></td><td>64-bit float</td><td>5</td></tr>
+<tr><td><code>Float</code></td><td>32-bit float</td><td>6</td></tr>
+<tr><td><code>Bool</code></td><td>Boolean</td><td>7</td></tr>
+<tr><td><code>UnixTimestamp</code></td><td>Unix timestamp</td><td>8</td></tr>
+<tr><td><code>Null</code></td><td>Null value</td><td>19</td></tr>
+<tr><td><code>Uuid</code></td><td>UUID</td><td>36</td></tr>
+<tr><td><code>Decimal</code></td><td>Decimal number</td><td>44</td></tr>
+<tr><td><code>Struct</code></td><td>Structured data</td><td>34</td></tr>
+<tr><td><code>Json</code></td><td>JSON value</td><td>32</td></tr>
+<tr><td><code>Map</code></td><td>Key-value map</td><td>20</td></tr>
+</tbody></table>
+</div>
+<h2 id="list-types"><a class="header" href="#list-types">List Types</a></h2>
+<p>Each primitive type has a corresponding list variant:</p>
+<pre><code class="language-python">from ofs import ValueType
+
+# String list
+ValueType.StringList     # 12
+
+# Int32 list
+ValueType.Int32List      # 13
+
+# Int64 list
+ValueType.Int64List      # 14
+</code></pre>
+<h2 id="set-types"><a class="header" href="#set-types">Set Types</a></h2>
+<p>Set types for unique value collections:</p>
+<pre><code class="language-python">ValueType.StringSet      # 23
+ValueType.Int32Set       # 24
+ValueType.Int64Set       # 25
+</code></pre>
+<h2 id="feasttype"><a class="header" href="#feasttype">FeastType</a></h2>
+<p>The <code>FeastType</code> enum provides a richer type system that can represent
+nested structures:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum FeastType {
+    Primitive(PrimitiveFeastType),
+    Array(Box&lt;FeastType&gt;),
+    Set(Box&lt;FeastType&gt;),
+    Struct(Vec&lt;(String, FeastType)&gt;),
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="arrow-conversion"><a class="header" href="#arrow-conversion">Arrow Conversion</a></h2>
+<p>Types can be converted to Apache Arrow data types for efficient data exchange:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let arrow_type = feast_type.to_arrow_type();
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rust-sdk-overview"><a class="header" href="#rust-sdk-overview">Rust SDK Overview</a></h1>
+<p>OpenFeatureStore is built as a Rust workspace with 7 crates. Each crate provides
+a specific layer of functionality with clean trait boundaries.</p>
+<h2 id="crate-structure"><a class="header" href="#crate-structure">Crate Structure</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Crate</th><th>Description</th><th>Dependencies</th></tr></thead><tbody>
+<tr><td><code>ofs-core</code></td><td>Domain types, traits, errors, utilities</td><td>prost, chrono, arrow</td></tr>
+<tr><td><code>ofs-proto</code></td><td>Generated protobuf definitions</td><td>prost, prost-types</td></tr>
+<tr><td><code>ofs-registry</code></td><td>SQLite-backed metadata registry</td><td>ofs-core, sqlx</td></tr>
+<tr><td><code>ofs-offline-store</code></td><td>DuckDB query builder for offline features</td><td>ofs-core, duckdb</td></tr>
+<tr><td><code>ofs-online-store</code></td><td>SQLite and Redis online serving</td><td>ofs-core, duckdb, redis</td></tr>
+<tr><td><code>ofs-materialization</code></td><td>Offline-to-online bridge</td><td>ofs-core, ofs-registry, ofs-offline, ofs-online</td></tr>
+<tr><td><code>ofs-python</code></td><td>Python bindings via PyO3</td><td>all of the above, pyo3</td></tr>
+</tbody></table>
+</div>
+<h2 id="traits"><a class="header" href="#traits">Traits</a></h2>
+<p>The four core traits define the store interfaces:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+pub trait Registry: Send + Sync {
+    async fn apply_entity(&amp;self, entity: &amp;Entity, project: &amp;str) -&gt; OfsResult&lt;()&gt;;
+    async fn get_entity(&amp;self, name: &amp;str, project: &amp;str) -&gt; OfsResult&lt;Option&lt;Entity&gt;&gt;;
+    async fn list_entities(&amp;self, project: &amp;str) -&gt; OfsResult&lt;Vec&lt;Entity&gt;&gt;;
+    async fn delete_entity(&amp;self, name: &amp;str, project: &amp;str) -&gt; OfsResult&lt;()&gt;;
+    // ... feature views, services, data sources, materialization
+}
+
+#[async_trait]
+pub trait OfflineStore: Send + Sync {
+    async fn get_historical_features(
+        &amp;self, entity_df: EntityDataFrame,
+        features: Vec&lt;FeatureViewWithProjection&gt;,
+        config: &amp;RepoConfig,
+    ) -&gt; OfsResult&lt;RetrievalJob&gt;;
+
+    async fn pull_features(
+        &amp;self, feature_view: &amp;FeatureView,
+        start_date: DateTime&lt;Utc&gt;, end_date: DateTime&lt;Utc&gt;,
+    ) -&gt; OfsResult&lt;RetrievalJob&gt;;
+}
+
+#[async_trait]
+pub trait OnlineStore: Send + Sync {
+    async fn online_read(
+        &amp;self, entity_keys: Vec&lt;EntityKey&gt;,
+        features: &amp;[FeatureViewWithProjection],
+        project: &amp;str,
+    ) -&gt; OfsResult&lt;OnlineReadResponse&gt;;
+
+    async fn online_write_batch(
+        &amp;self, data: Vec&lt;OnlineWriteRecord&gt;, project: &amp;str,
+    ) -&gt; OfsResult&lt;()&gt;;
+}
+
+#[async_trait]
+pub trait MaterializationEngine: Send + Sync {
+    async fn materialize(
+        &amp;self, start_date: DateTime&lt;Utc&gt;, end_date: DateTime&lt;Utc&gt;,
+        feature_views: Option&lt;Vec&lt;String&gt;&gt;, project: &amp;str,
+        full_feature_names: bool,
+    ) -&gt; OfsResult&lt;()&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="async-runtime"><a class="header" href="#async-runtime">Async Runtime</a></h2>
+<p>All traits use async methods via <code>async-trait</code>. The Python bindings use a
+global Tokio runtime with <code>block_on</code> for synchronous Python calls.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ofs-core"><a class="header" href="#ofs-core">ofs-core</a></h1>
+<p>The core crate defining all domain types, traits, and utilities used by the
+entire feature store.</p>
+<h2 id="key-modules"><a class="header" href="#key-modules">Key Modules</a></h2>
+<h3 id="types-module"><a class="header" href="#types-module"><code>types</code> Module</a></h3>
+<p>Domain models:</p>
+<ul>
+<li><code>Entity</code> — A domain object with features</li>
+<li><code>FeatureView</code> — Group of features from a data source</li>
+<li><code>FeatureService</code> — Bundle of feature views for serving</li>
+<li><code>DataSource</code> — Physical data source definition</li>
+<li><code>EntityKey</code> — Composite key for entity identification</li>
+<li><code>RepoConfig</code> — Repository configuration</li>
+<li><code>OnlineWriteRecord</code> — Record for batch writes</li>
+<li><code>OnlineReadResponse</code> — Response for online reads</li>
+<li><code>RetrievalJob</code> — Deferred query result</li>
+</ul>
+<h3 id="traits-module"><a class="header" href="#traits-module"><code>traits</code> Module</a></h3>
+<p>Async trait definitions:</p>
+<ul>
+<li><code>Registry</code> — Metadata CRUD operations</li>
+<li><code>OfflineStore</code> — Historical and pull-based feature retrieval</li>
+<li><code>OnlineStore</code> — Low-latency feature serving</li>
+<li><code>MaterializationEngine</code> — Offline-to-online bridge</li>
+</ul>
+<h3 id="value_type-module"><a class="header" href="#value_type-module"><code>value_type</code> Module</a></h3>
+<ul>
+<li><code>ValueType</code> enum (49 variants)</li>
+<li><code>FeastType</code> with <code>Primitive</code>, <code>Array</code>, <code>Set</code>, <code>Struct</code> variants</li>
+<li><code>PrimitiveFeastType</code> enum</li>
+<li>Conversion to/from Arrow data types</li>
+</ul>
+<h3 id="entity_key-module"><a class="header" href="#entity_key-module"><code>entity_key</code> Module</a></h3>
+<ul>
+<li><code>serialize_entity_key_v3()</code> — Feast v3 format serialization</li>
+<li><code>deserialize_entity_key_v3()</code> — Feast v3 format deserialization</li>
+<li><code>serialize_entity_key_prefix()</code> — Prefix for key scanning</li>
+</ul>
+<h3 id="errors-module"><a class="header" href="#errors-module"><code>errors</code> Module</a></h3>
+<p>Unified error type:</p>
+<ul>
+<li><code>OfsError</code> — All error variants</li>
+<li><code>OfsResult&lt;T&gt;</code> — Type alias for <code>Result&lt;T, OfsError&gt;</code></li>
+</ul>
+<h3 id="utils-module"><a class="header" href="#utils-module"><code>utils</code> Module</a></h3>
+<ul>
+<li><code>proto_to_datetime()</code> / <code>datetime_to_proto()</code> — Chrono-to-prost conversion</li>
+<li><code>duration_to_proto()</code> / <code>proto_to_duration()</code> — Duration conversion</li>
+</ul>
+<h2 id="re-exports"><a class="header" href="#re-exports">Re-exports</a></h2>
+<p>All public types are re-exported from the crate root via <code>pub use *</code> on each module.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ofs-registry"><a class="header" href="#ofs-registry">ofs-registry</a></h1>
+<p>SQLite-backed registry implementing the <code>Registry</code> trait.</p>
+<h2 id="sqlregistry"><a class="header" href="#sqlregistry">SqlRegistry</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SqlRegistry;
+
+impl SqlRegistry {
+    pub async fn new(pool: SqlitePool) -&gt; OfsResult&lt;Self&gt;;
+    pub async fn in_memory() -&gt; OfsResult&lt;Self&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="storage-format"><a class="header" href="#storage-format">Storage Format</a></h2>
+<p>Tables:</p>
+<ul>
+<li><code>registries(project TEXT, name TEXT, last_synced INT, registry_proto_bytes BLOB)</code></li>
+</ul>
+<p>Each row stores a serialized <code>feast::core::Registry</code> protobuf for a project.
+Domain types are converted to/from protobuf representations.</p>
+<h2 id="methods"><a class="header" href="#methods">Methods</a></h2>
+<p>All <code>Registry</code> trait methods are implemented:</p>
+<ul>
+<li><strong>Entities</strong>: <code>apply_entity</code>, <code>get_entity</code>, <code>list_entities</code>, <code>delete_entity</code></li>
+<li><strong>Feature Views</strong>: <code>apply_feature_view</code>, <code>get_feature_view</code>, <code>list_feature_views</code>, <code>delete_feature_view</code></li>
+<li><strong>Feature Services</strong>: <code>apply_feature_service</code>, <code>get_feature_service</code>, <code>list_feature_services</code>, <code>delete_feature_service</code></li>
+<li><strong>Data Sources</strong>: <code>apply_data_source</code>, <code>get_data_source</code>, <code>list_data_sources</code>, <code>delete_data_source</code></li>
+<li><strong>On-Demand FVs</strong>: <code>apply_on_demand_feature_view</code>, <code>list_on_demand_feature_views</code></li>
+<li><strong>Materialization</strong>: <code>apply_materialization</code>, <code>get_materialization_intervals</code></li>
+<li><strong>Persistence</strong>: <code>commit</code></li>
+</ul>
+<h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use ofs_registry::SqlRegistry;
+use ofs_core::types::Entity;
+
+let registry = SqlRegistry::in_memory().await?;
+let entity = Entity::new("user", vec!["user_id".to_string()]);
+registry.apply_entity(&amp;entity, "my_project").await?;
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ofs-offline-store"><a class="header" href="#ofs-offline-store">ofs-offline-store</a></h1>
+<p>DuckDB-powered offline store for point-in-time correct feature retrieval.</p>
+<h2 id="duckdbofflinestore"><a class="header" href="#duckdbofflinestore">DuckDbOfflineStore</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DuckDbOfflineStore;
+
+impl OfflineStore for DuckDbOfflineStore {
+    async fn get_historical_features(
+        &amp;self,
+        entity_df: EntityDataFrame,
+        features: Vec&lt;FeatureViewWithProjection&gt;,
+        config: &amp;RepoConfig,
+    ) -&gt; OfsResult&lt;RetrievalJob&gt;;
+
+    async fn pull_features(
+        &amp;self,
+        feature_view: &amp;FeatureView,
+        start_date: DateTime&lt;Utc&gt;,
+        end_date: DateTime&lt;Utc&gt;,
+    ) -&gt; OfsResult&lt;RetrievalJob&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="asof-join"><a class="header" href="#asof-join">ASOF JOIN</a></h2>
+<p>The offline store builds SQL queries using DuckDB's <code>ASOF JOIN</code> capability for
+point-in-time correctness:</p>
+<pre><code class="language-sql">SELECT
+    entity_df.entity_key,
+    entity_df.event_timestamp,
+    fv.feature_name,
+    fv.feature_value
+FROM entity_dataframe entity_df
+ASOF JOIN feature_table fv
+    ON entity_df.entity_key = fv.entity_key
+    AND entity_df.event_timestamp &gt;= fv.event_timestamp
+WHERE
+    entity_df.event_timestamp &gt;= '2024-01-01'
+    AND entity_df.event_timestamp &lt; '2024-01-02'
+</code></pre>
+<h2 id="retrievaljob"><a class="header" href="#retrievaljob">RetrievalJob</a></h2>
+<p>The offline store returns a <code>RetrievalJob</code> with the generated SQL query and
+column metadata. The actual DuckDB execution is deferred to the caller
+(typically the materialization engine):</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RetrievalJob {
+    pub query: String,
+    pub schema_fields: Vec&lt;String&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ofs-online-store"><a class="header" href="#ofs-online-store">ofs-online-store</a></h1>
+<p>Online store implementations for low-latency feature serving.</p>
+<h2 id="sqliteonlinestore"><a class="header" href="#sqliteonlinestore">SqliteOnlineStore</a></h2>
+<p>Per-feature-view table storage with <code>INSERT OR REPLACE</code> semantics:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SqliteOnlineStore;
+
+impl SqliteOnlineStore {
+    pub fn new(pool: SqlitePool) -&gt; Self;
+    pub async fn in_memory() -&gt; OfsResult&lt;Self&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="storage-schema"><a class="header" href="#storage-schema">Storage Schema</a></h3>
+<pre><code class="language-sql">CREATE TABLE IF NOT EXISTS fv__{feature_view_name} (
+    entity_key   BLOB PRIMARY KEY,
+    feature_name TEXT NOT NULL,
+    value        BLOB,
+    event_ts     TIMESTAMP,
+    created_ts   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</code></pre>
+<h2 id="redisonlinestore"><a class="header" href="#redisonlinestore">RedisOnlineStore</a></h2>
+<p>Hash-based online store with TTL support:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RedisOnlineStore;
+
+impl RedisOnlineStore {
+    pub async fn new(connection_string: &amp;str) -&gt; OfsResult&lt;Self&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="key-format-1"><a class="header" href="#key-format-1">Key Format</a></h3>
+<pre><code>{project}:{feature_view}:{entity_key_hex}
+</code></pre>
+<p>Each key maps to a Redis hash where field names are feature names and
+values are serialized feature values.</p>
+<h2 id="common-interface"><a class="header" href="#common-interface">Common Interface</a></h2>
+<p>Both stores implement the <code>OnlineStore</code> trait:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl OnlineStore for SqliteOnlineStore {
+    async fn online_read(
+        &amp;self, entity_keys: Vec&lt;EntityKey&gt;,
+        features: &amp;[FeatureViewWithProjection],
+        project: &amp;str,
+    ) -&gt; OfsResult&lt;OnlineReadResponse&gt;;
+
+    async fn online_write_batch(
+        &amp;self, data: Vec&lt;OnlineWriteRecord&gt;, project: &amp;str,
+    ) -&gt; OfsResult&lt;()&gt;;
+
+    async fn update(
+        &amp;self, tables_to_keep: Vec&lt;String&gt;, tables_to_delete: Vec&lt;String&gt;,
+    ) -&gt; OfsResult&lt;()&gt;;
+
+    async fn teardown(&amp;self) -&gt; OfsResult&lt;()&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ofs-materialization"><a class="header" href="#ofs-materialization">ofs-materialization</a></h1>
+<p>The materialization engine bridges the offline and online stores,
+pulling feature data from DuckDB and writing it to SQLite or Redis.</p>
+<h2 id="defaultmaterializationengine"><a class="header" href="#defaultmaterializationengine">DefaultMaterializationEngine</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct DefaultMaterializationEngine;
+
+impl DefaultMaterializationEngine {
+    pub fn new(
+        registry: Arc&lt;dyn Registry&gt;,
+        offline_store: Arc&lt;dyn OfflineStore&gt;,
+        online_store: Arc&lt;dyn OnlineStore&gt;,
+        config: RepoConfig,
+    ) -&gt; Self;
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="methods-1"><a class="header" href="#methods-1">Methods</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+impl MaterializationEngine for DefaultMaterializationEngine {
+    async fn materialize(
+        &amp;self,
+        start_date: DateTime&lt;Utc&gt;,
+        end_date: DateTime&lt;Utc&gt;,
+        feature_views: Option&lt;Vec&lt;String&gt;&gt;,
+        project: &amp;str,
+        full_feature_names: bool,
+    ) -&gt; OfsResult&lt;()&gt;;
+
+    async fn materialize_incremental(
+        &amp;self,
+        end_date: DateTime&lt;Utc&gt;,
+        feature_views: Option&lt;Vec&lt;String&gt;&gt;,
+        project: &amp;str,
+        full_feature_names: bool,
+    ) -&gt; OfsResult&lt;()&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="execution-flow"><a class="header" href="#execution-flow">Execution Flow</a></h2>
+<ol>
+<li>Registry returns all feature views (or specified subset)</li>
+<li>For each feature view:
+<ul>
+<li>Call <code>offline_store.pull_features(fv, start, end)</code> → SQL query</li>
+<li>Execute DuckDB query directly</li>
+<li>Convert each row to <code>OnlineWriteRecord</code></li>
+<li>Write records to online store in batches of 100</li>
+</ul>
+</li>
+</ol>
+<h2 id="incremental-materialization"><a class="header" href="#incremental-materialization">Incremental Materialization</a></h2>
+<p><code>materialize_incremental</code> uses previously recorded materialization intervals to
+determine the start time:</p>
+<ul>
+<li>If no prior materialization exists, materializes from epoch to <code>end_date</code></li>
+<li>If prior intervals exist, materializes from <code>last_end_time</code> to <code>end_date</code></li>
+<li>New intervals are recorded in the registry</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ofs-proto"><a class="header" href="#ofs-proto">ofs-proto</a></h1>
+<p>Generated protobuf definitions matching Feast 0.42+ schema.</p>
+<h2 id="protobuf-files"><a class="header" href="#protobuf-files">Protobuf Files</a></h2>
+<p>The protobuf definitions are in <code>protos/feast/</code>:</p>
+<ul>
+<li><code>core/DataSource.proto</code> — Data source definitions</li>
+<li><code>core/Entity.proto</code> — Entity definitions</li>
+<li><code>core/FeatureService.proto</code> — Feature service definitions</li>
+<li><code>core/FeatureTable.proto</code> — Feature table (legacy)</li>
+<li><code>core/FeatureView.proto</code> — Feature view definitions</li>
+<li><code>core/FeatureViewProjection.proto</code> — Feature view projection</li>
+<li><code>core/OnDemandFeatureView.proto</code> — On-demand feature views</li>
+<li><code>core/Registry.proto</code> — Registry serialization</li>
+<li><code>core/SqlRegistry.proto</code> — SQL registry metadata</li>
+<li><code>core/DataFormat.proto</code> — Data format definitions</li>
+<li><code>core/Aggregation.proto</code> — Aggregation definitions</li>
+<li><code>types/Value.proto</code> — Value type definitions</li>
+<li><code>serving/ServingService.proto</code> — Serving service API</li>
+</ul>
+<h2 id="code-generation"><a class="header" href="#code-generation">Code Generation</a></h2>
+<p>Protobuf code is generated at build time using <code>prost-build</code>:</p>
+<pre><pre class="playground"><code class="language-rust no_run">// build.rs
+fn main() {
+    prost_build::compile_protos(
+        &amp;["protos/feast/core/Registry.proto"],
+        &amp;["protos/"],
+    ).unwrap();
+}</code></pre></pre>
+<h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use ofs_proto::feast::core::Entity as ProtoEntity;
+
+let entity = ProtoEntity {
+    name: "user".to_string(),
+    // ...
+};
+<span class="boring">}</span></code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="python-sdk--getting-started"><a class="header" href="#python-sdk--getting-started">Python SDK — Getting Started</a></h1>
+<p>The Python SDK provides native bindings to the Rust feature store via PyO3.</p>
+<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
+<pre><code class="language-bash"># From source
+cd crates/ofs-python
+pip install maturin
+maturin develop --release
+
+# Or install the wheel
+maturin build --release
+pip install target/wheels/openfeaturestore-*.whl
+</code></pre>
+<h2 id="quickstart"><a class="header" href="#quickstart">Quickstart</a></h2>
+<h3 id="featurestore-high-level-api"><a class="header" href="#featurestore-high-level-api">FeatureStore (High-Level API)</a></h3>
+<pre><code class="language-python">from ofs import FeatureStore
+
+# Create an in-memory feature store
+store = FeatureStore.in_memory(project="demo")
+
+# Register an entity
+store.apply_entity("user", join_keys=["user_id"])
+
+# Register a feature view with features
+store.apply_feature_view(
+    "user_features",
+    entities=["user"],
+    features=["age", "gender", "signup_date"],
+    ttl_secs=86400,  # 24 hours
+)
+
+# List resources
+print(store.list_entities())
+print(store.list_feature_views())
+
+# Materialize features
+store.materialize(start_date=1700000000, end_date=1700086400)
+
+# Read features online
+result = store.online_read(
+    entity_keys={"user_id": b"12345"},
+    features=["age", "gender"],
+    feature_view_name="user_features"
+)
+print(result)  # [b'25', b'male']
+</code></pre>
+<h3 id="direct-store-access"><a class="header" href="#direct-store-access">Direct Store Access</a></h3>
+<pre><code class="language-python">from ofs import (
+    SqlRegistry, DuckDbOfflineStore, SqliteOnlineStore,
+    Entity, Feature, FeatureView,
+    DefaultMaterializationEngine,
+)
+
+# Create stores
+registry = SqlRegistry.in_memory()
+offline = DuckDbOfflineStore()
+online = SqliteOnlineStore.in_memory()
+
+# Work with the registry
+entity = Entity("user", join_keys=["user_id"])
+registry.apply_entity(entity, "demo")
+
+# Pull features from offline store
+sql = offline.pull_features("user_features", 1700000000, 1700086400)
+print(f"Generated SQL: {sql}")
+
+# Write to online store
+from ofs import EntityKey
+key = EntityKey(["user_id"])
+key.add_value("user_id", b"12345", 2)
+online.online_write(
+    key, {"age": b"25"}, "user_features", "demo"
+)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="featurestore-api"><a class="header" href="#featurestore-api">FeatureStore API</a></h1>
+<p>The <code>FeatureStore</code> class provides a unified high-level API.</p>
+<h2 id="constructor"><a class="header" href="#constructor">Constructor</a></h2>
+<pre><code class="language-python">FeatureStore(registry, offline_store, online_store, project="default")
+</code></pre>
+<h3 id="class-methods"><a class="header" href="#class-methods">Class Methods</a></h3>
+<p><strong><code>FeatureStore.in_memory(project="default")</code></strong></p>
+<p>Creates a feature store with in-memory registry and online store, suitable for
+development and testing.</p>
+<pre><code class="language-python">from ofs import FeatureStore
+store = FeatureStore.in_memory(project="demo")
+</code></pre>
+<h2 id="methods-2"><a class="header" href="#methods-2">Methods</a></h2>
+<h3 id="entity-management"><a class="header" href="#entity-management">Entity Management</a></h3>
+<p><strong><code>apply_entity(name, join_keys, description=None, owner=None)</code></strong></p>
+<p>Register an entity.</p>
+<div class="table-wrapper"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>name</code></td><td><code>str</code></td><td>Entity name</td></tr>
+<tr><td><code>join_keys</code></td><td><code>List[str]</code></td><td>Columns used to identify the entity</td></tr>
+<tr><td><code>description</code></td><td><code>str</code> (optional)</td><td>Human-readable description</td></tr>
+<tr><td><code>owner</code></td><td><code>str</code> (optional)</td><td>Owner name</td></tr>
+</tbody></table>
+</div>
+<p><strong><code>list_entities()</code></strong></p>
+<p>Returns a list of entity dicts with <code>name</code>, <code>join_keys</code>, <code>description</code>.</p>
+<h3 id="feature-view-management"><a class="header" href="#feature-view-management">Feature View Management</a></h3>
+<p><strong><code>apply_feature_view(name, entities, features, ttl_secs=None)</code></strong></p>
+<p>Register a feature view.</p>
+<div class="table-wrapper"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>name</code></td><td><code>str</code></td><td>Feature view name</td></tr>
+<tr><td><code>entities</code></td><td><code>List[str]</code></td><td>Referenced entity names</td></tr>
+<tr><td><code>features</code></td><td><code>List[str]</code></td><td>Feature names (currently all String type)</td></tr>
+<tr><td><code>ttl_secs</code></td><td><code>int</code> (optional)</td><td>Time-to-live in seconds</td></tr>
+</tbody></table>
+</div>
+<p><strong><code>list_feature_views()</code></strong></p>
+<p>Returns a list of feature view dicts with <code>name</code>, <code>entities</code>, <code>features</code>.</p>
+<h3 id="materialization"><a class="header" href="#materialization">Materialization</a></h3>
+<p><strong><code>materialize(start_date, end_date)</code></strong></p>
+<p>Materialize features from the offline store to the online store.</p>
+<div class="table-wrapper"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>start_date</code></td><td><code>float</code></td><td>Start Unix timestamp</td></tr>
+<tr><td><code>end_date</code></td><td><code>float</code></td><td>End Unix timestamp</td></tr>
+</tbody></table>
+</div>
+<p><strong><code>materialize_incremental(end_date)</code></strong></p>
+<p>Incrementally materialize features since the last materialization.</p>
+<h3 id="online-serving"><a class="header" href="#online-serving">Online Serving</a></h3>
+<p><strong><code>online_read(entity_keys, features, feature_view_name="default")</code></strong></p>
+<p>Read feature values from the online store.</p>
+<div class="table-wrapper"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>entity_keys</code></td><td><code>Dict[str, bytes]</code></td><td>Entity key name to value mapping</td></tr>
+<tr><td><code>features</code></td><td><code>List[str]</code></td><td>Feature names to retrieve</td></tr>
+<tr><td><code>feature_view_name</code></td><td><code>str</code></td><td>Feature view name</td></tr>
+</tbody></table>
+</div>
+<p>Returns <code>List[Optional[bytes]]</code> — feature values or <code>None</code>.</p>
+<p><strong><code>online_write(entity_keys, values, feature_view_name="default")</code></strong></p>
+<p>Write feature values to the online store.</p>
+<div class="table-wrapper"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>entity_keys</code></td><td><code>Dict[str, bytes]</code></td><td>Entity key name to value mapping</td></tr>
+<tr><td><code>values</code></td><td><code>Dict[str, bytes]</code></td><td>Feature name to serialized value mapping</td></tr>
+<tr><td><code>feature_view_name</code></td><td><code>str</code></td><td>Feature view name</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="type-reference"><a class="header" href="#type-reference">Type Reference</a></h1>
+<h2 id="enums"><a class="header" href="#enums">Enums</a></h2>
+<h3 id="valuetype"><a class="header" href="#valuetype"><code>ValueType</code></a></h3>
+<p>Feast-compatible value type enum:</p>
+<pre><code class="language-python">from ofs import ValueType
+
+# All variants
+ValueType.Invalid          # 0
+ValueType.Bytes            # 1
+ValueType.String           # 2
+ValueType.Int32            # 3
+ValueType.Int64            # 4
+ValueType.Double           # 5
+ValueType.Float            # 6
+ValueType.Bool             # 7
+ValueType.UnixTimestamp    # 8
+ValueType.BytesList        # 11
+ValueType.StringList       # 12
+ValueType.Int32List        # 13
+ValueType.Int64List        # 14
+ValueType.DoubleList       # 15
+ValueType.FloatList        # 16
+ValueType.BoolList         # 17
+ValueType.Uuid             # 36
+ValueType.Decimal          # 44
+ValueType.Struct           # 34
+ValueType.Json             # 32
+
+# Methods
+ValueType.from_i32(2)      # Returns ValueType.String or None
+vt.is_primitive()          # bool
+vt.is_list()               # bool
+vt.is_set()                # bool
+str(vt)                    # "String"
+</code></pre>
+<h3 id="sourcetype"><a class="header" href="#sourcetype"><code>SourceType</code></a></h3>
+<pre><code class="language-python">from ofs import SourceType
+
+SourceType.BatchFile        # 1
+SourceType.BatchBigQuery    # 2
+SourceType.StreamKafka      # 3
+</code></pre>
+<h3 id="fileformat"><a class="header" href="#fileformat"><code>FileFormat</code></a></h3>
+<pre><code class="language-python">from ofs import FileFormat
+
+FileFormat.Parquet
+FileFormat.Csv
+FileFormat.Arrow
+</code></pre>
+<h2 id="domain-types"><a class="header" href="#domain-types">Domain Types</a></h2>
+<h3 id="entityname-join_keys"><a class="header" href="#entityname-join_keys"><code>Entity(name, join_keys)</code></a></h3>
+<pre><code class="language-python">from ofs import Entity
+
+entity = Entity("user", ["user_id"])
+entity.set_description("A user")
+entity.set_owner("data-team")
+entity.name          # "user"
+entity.join_keys     # ["user_id"]
+entity.description   # "A user"
+</code></pre>
+<h3 id="featurename-value_type"><a class="header" href="#featurename-value_type"><code>Feature(name, value_type)</code></a></h3>
+<pre><code class="language-python">from ofs import Feature, ValueType
+
+feature = Feature("age", ValueType.Int32)
+feature.name         # "age"
+feature.value_type   # ValueType.Int32
+</code></pre>
+<h3 id="featureviewname"><a class="header" href="#featureviewname"><code>FeatureView(name)</code></a></h3>
+<pre><code class="language-python">from ofs import FeatureView, Feature
+
+fv = FeatureView("user_features")
+fv.add_entity("user")
+fv.add_feature(Feature("age", ValueType.Int32))
+fv.set_ttl_secs(86400)
+</code></pre>
+<h3 id="entitykeyjoin_keys"><a class="header" href="#entitykeyjoin_keys"><code>EntityKey(join_keys)</code></a></h3>
+<pre><code class="language-python">from ofs import EntityKey
+
+key = EntityKey(["user_id"])
+key.add_value("user_id", b"12345", 2)  # ValueType.String
+key.serialize()
+</code></pre>
+<h3 id="repoconfig"><a class="header" href="#repoconfig"><code>RepoConfig()</code></a></h3>
+<pre><code class="language-python">from ofs import RepoConfig, ValueType
+
+config = RepoConfig()
+config.project = "my_project"
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="python-sdk-examples"><a class="header" href="#python-sdk-examples">Python SDK Examples</a></h1>
+<h2 id="full-workflow"><a class="header" href="#full-workflow">Full Workflow</a></h2>
+<pre><code class="language-python">"""End-to-end feature store workflow."""
+from ofs import FeatureStore, ValueType
+
+# 1. Initialize
+store = FeatureStore.in_memory(project="recommendation")
+
+# 2. Register entities
+store.apply_entity("user", join_keys=["user_id"])
+store.apply_entity("item", join_keys=["item_id"])
+
+# 3. Register feature views
+store.apply_feature_view(
+    "user_features",
+    entities=["user"],
+    features=["age", "gender", "country", "signup_date"],
+    ttl_secs=86400 * 7,  # 1 week
+)
+
+store.apply_feature_view(
+    "item_features",
+    entities=["item"],
+    features=["category", "price", "rating"],
+    ttl_secs=86400 * 30,  # 30 days
+)
+
+# 4. List resources
+for entity in store.list_entities():
+    print(f"Entity: {entity['name']}, keys: {entity['join_keys']}")
+
+for fv in store.list_feature_views():
+    print(f"FeatureView: {fv['name']}, features: {fv['features']}")
+
+# 5. Materialize (in production, data would come from DuckDB offline store)
+store.materialize(start_date=1700000000, end_date=1700086400)
+
+# 6. Write features directly for testing
+store.online_write(
+    entity_keys={"user_id": b"user_001"},
+    values={
+        "age": b"28",
+        "gender": b"female",
+        "country": b"US",
+        "signup_date": b"2023-01-15",
+    },
+    feature_view_name="user_features",
+)
+
+# 7. Read features online
+features = store.online_read(
+    entity_keys={"user_id": b"user_001"},
+    features=["age", "gender", "country"],
+    feature_view_name="user_features",
+)
+
+print(f"User features: {features}")
+# Output: [b'28', b'female', b'US']
+</code></pre>
+<h2 id="using-the-cli-1"><a class="header" href="#using-the-cli-1">Using the CLI</a></h2>
+<pre><code class="language-bash"># Initialize
+ofs init --project demo
+
+# Apply entity
+ofs apply-entity user --join-keys user_id
+
+# Apply feature view
+ofs apply-feature-view user_features \
+    --entities user \
+    --features age,gender,country
+
+# List resources
+ofs list-entities
+ofs list-feature-views
+
+# Materialize
+ofs materialize --start-date 1700000000 --end-date 1700086400
+
+# Incremental materialization
+ofs incremental --end-date 1700090000
+</code></pre>
+<h2 id="mcp-server"><a class="header" href="#mcp-server">MCP Server</a></h2>
+<pre><code class="language-bash"># Start MCP server (reads JSON from stdin, writes to stdout)
+echo '{"tool": "init", "args": {"project": "demo"}}' | ofs-mcp
+echo '{"tool": "apply_entity", "args": {"name": "user", "join_keys": ["user_id"]}}' | ofs-mcp
+echo '{"tool": "list_entities", "args": {}}' | ofs-mcp
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cli-overview"><a class="header" href="#cli-overview">CLI Overview</a></h1>
+<p>The <code>ofs</code> command-line tool provides feature store management from the terminal.</p>
+<h2 id="installation-2"><a class="header" href="#installation-2">Installation</a></h2>
+<pre><code class="language-bash"># Via pip after building the Python package
+pip install openfeaturestore
+
+# Verify
+ofs --help
+</code></pre>
+<h2 id="global-options"><a class="header" href="#global-options">Global Options</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>--project, -p</code></td><td>Project name (default: "default")</td></tr>
+<tr><td><code>--store, -s</code></td><td>Store backend (default: "memory")</td></tr>
+<tr><td><code>--help</code></td><td>Show help message</td></tr>
+</tbody></table>
+</div>
+<h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
+<pre><code class="language-bash">ofs [global-options] &lt;command&gt; [command-options]
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cli-commands"><a class="header" href="#cli-commands">CLI Commands</a></h1>
+<h2 id="init"><a class="header" href="#init"><code>init</code></a></h2>
+<p>Initialize a new feature store.</p>
+<pre><code class="language-bash">ofs init [--project PROJECT]
+</code></pre>
+<h2 id="apply-entity"><a class="header" href="#apply-entity"><code>apply-entity</code></a></h2>
+<p>Register an entity.</p>
+<pre><code class="language-bash">ofs apply-entity &lt;name&gt; [--join-keys KEYS] [--project PROJECT]
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>name</code> — Entity name (required)</li>
+</ul>
+<p><strong>Options:</strong></p>
+<ul>
+<li><code>--join-keys</code> — Comma-separated list of join key names</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">ofs apply-entity user --join-keys user_id
+ofs apply-entity transaction --join-keys transaction_id,user_id
+</code></pre>
+<h2 id="apply-feature-view"><a class="header" href="#apply-feature-view"><code>apply-feature-view</code></a></h2>
+<p>Register a feature view.</p>
+<pre><code class="language-bash">ofs apply-feature-view &lt;name&gt; [options]
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>name</code> — Feature view name (required)</li>
+</ul>
+<p><strong>Options:</strong></p>
+<ul>
+<li><code>--entities</code> — Comma-separated entity names</li>
+<li><code>--features</code> — Comma-separated feature names</li>
+<li><code>--ttl</code> — TTL in seconds</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">ofs apply-feature-view user_features \
+    --entities user \
+    --features age,gender,signup_date \
+    --ttl 86400
+</code></pre>
+<h2 id="list-entities"><a class="header" href="#list-entities"><code>list-entities</code></a></h2>
+<p>List all registered entities.</p>
+<pre><code class="language-bash">ofs list-entities [--project PROJECT]
+</code></pre>
+<h2 id="list-feature-views"><a class="header" href="#list-feature-views"><code>list-feature-views</code></a></h2>
+<p>List all registered feature views.</p>
+<pre><code class="language-bash">ofs list-feature-views [--project PROJECT]
+</code></pre>
+<h2 id="materialize"><a class="header" href="#materialize"><code>materialize</code></a></h2>
+<p>Materialize features from offline to online store.</p>
+<pre><code class="language-bash">ofs materialize --start-date UNIX_TS --end-date UNIX_TS [--project PROJECT]
+</code></pre>
+<p><strong>Options:</strong></p>
+<ul>
+<li><code>--start-date</code> — Start Unix timestamp (required)</li>
+<li><code>--end-date</code> — End Unix timestamp (required)</li>
+</ul>
+<h2 id="incremental"><a class="header" href="#incremental"><code>incremental</code></a></h2>
+<p>Incremental materialization.</p>
+<pre><code class="language-bash">ofs incremental --end-date UNIX_TS [--project PROJECT]
+</code></pre>
+<p><strong>Options:</strong></p>
+<ul>
+<li><code>--end-date</code> — End Unix timestamp (required)</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mcp-server-overview"><a class="header" href="#mcp-server-overview">MCP Server Overview</a></h1>
+<p>The MCP (Model Context Protocol) server allows OpenFeatureStore to be used as a
+tool provider by AI assistants.</p>
+<h2 id="architecture"><a class="header" href="#architecture">Architecture</a></h2>
+<p>The MCP server uses a simple JSON-over-stdin/stdout protocol:</p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant AI as AI Assistant
+    participant MCP as ofs-mcp
+    participant FS as FeatureStore
+
+    AI-&gt;&gt;MCP: JSON request (stdin)
+    MCP-&gt;&gt;FS: Dispatch command
+    FS--&gt;&gt;MCP: Result
+    MCP--&gt;&gt;AI: JSON response (stdout)
+</code></pre>
+<h2 id="running-the-server"><a class="header" href="#running-the-server">Running the Server</a></h2>
+<pre><code class="language-bash"># Direct invocation
+ofs-mcp
+
+# With input from echo
+echo '{"tool": "init", "args": {"project": "demo"}}' | ofs-mcp
+
+# With input from file
+ofs-mcp &lt; request.json
+</code></pre>
+<h2 id="available-tools"><a class="header" href="#available-tools">Available Tools</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Tool</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>init</code></td><td>Initialize feature store</td></tr>
+<tr><td><code>apply_entity</code></td><td>Register an entity</td></tr>
+<tr><td><code>apply_feature_view</code></td><td>Register a feature view</td></tr>
+<tr><td><code>list_entities</code></td><td>List registered entities</td></tr>
+<tr><td><code>list_feature_views</code></td><td>List registered feature views</td></tr>
+<tr><td><code>materialize</code></td><td>Materialize features</td></tr>
+<tr><td><code>online_read</code></td><td>Read features online</td></tr>
+<tr><td><code>online_write</code></td><td>Write features online</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="mcp-protocol"><a class="header" href="#mcp-protocol">MCP Protocol</a></h1>
+<h2 id="request-format"><a class="header" href="#request-format">Request Format</a></h2>
+<p>Each request is a single JSON object on a line:</p>
+<pre><code class="language-json">{
+  "tool": "&lt;tool_name&gt;",
+  "args": { "&lt;key&gt;": "&lt;value&gt;", ... }
+}
+</code></pre>
+<h2 id="response-format"><a class="header" href="#response-format">Response Format</a></h2>
+<p>Success:</p>
+<pre><code class="language-json">{
+  "success": true,
+  "result": { ... }
+}
+</code></pre>
+<p>Error:</p>
+<pre><code class="language-json">{
+  "success": false,
+  "error": "error message"
+}
+</code></pre>
+<h2 id="tool-details"><a class="header" href="#tool-details">Tool Details</a></h2>
+<h3 id="init-1"><a class="header" href="#init-1"><code>init</code></a></h3>
+<p>Initialize the feature store.</p>
+<pre><code class="language-json">{"tool": "init", "args": {"project": "demo"}}
+</code></pre>
+<p>Response: <code>{"success": true, "result": {"message": "FeatureStore initialized"}}</code></p>
+<h3 id="apply_entity"><a class="header" href="#apply_entity"><code>apply_entity</code></a></h3>
+<p>Register an entity.</p>
+<pre><code class="language-json">{
+  "tool": "apply_entity",
+  "args": {
+    "name": "user",
+    "join_keys": ["user_id"],
+    "description": "A user",
+    "owner": "data-team"
+  }
+}
+</code></pre>
+<h3 id="apply_feature_view"><a class="header" href="#apply_feature_view"><code>apply_feature_view</code></a></h3>
+<p>Register a feature view.</p>
+<pre><code class="language-json">{
+  "tool": "apply_feature_view",
+  "args": {
+    "name": "user_features",
+    "entities": ["user"],
+    "features": ["age", "gender"],
+    "ttl_secs": 86400
+  }
+}
+</code></pre>
+<h3 id="list_entities"><a class="header" href="#list_entities"><code>list_entities</code></a></h3>
+<pre><code class="language-json">{"tool": "list_entities", "args": {}}
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json">{
+  "success": true,
+  "result": {
+    "entities": [
+      {"name": "user", "join_keys": ["user_id"], "description": "A user"}
+    ]
+  }
+}
+</code></pre>
+<h3 id="list_feature_views"><a class="header" href="#list_feature_views"><code>list_feature_views</code></a></h3>
+<pre><code class="language-json">{"tool": "list_feature_views", "args": {}}
+</code></pre>
+<h3 id="materialize-1"><a class="header" href="#materialize-1"><code>materialize</code></a></h3>
+<pre><code class="language-json">{
+  "tool": "materialize",
+  "args": {
+    "start_date": 1700000000.0,
+    "end_date": 1700086400.0
+  }
+}
+</code></pre>
+<h3 id="online_read"><a class="header" href="#online_read"><code>online_read</code></a></h3>
+<pre><code class="language-json">{
+  "tool": "online_read",
+  "args": {
+    "entity_keys": {"user_id": "dXNlcl8wMDE="},
+    "features": ["age", "gender"],
+    "feature_view_name": "user_features"
+  }
+}
+</code></pre>
+<p>Entity key values must be base64-encoded byte strings.</p>
+<h3 id="online_write"><a class="header" href="#online_write"><code>online_write</code></a></h3>
+<pre><code class="language-json">{
+  "tool": "online_write",
+  "args": {
+    "entity_keys": {"user_id": "dXNlcl8wMDE="},
+    "values": {"age": "Mjg="},
+    "feature_view_name": "user_features"
+  }
+}
+</code></pre>
+<p>All values must be base64-encoded byte strings.</p>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<p>The server reads and processes one line at a time, writing the response to
+stdout. Invalid JSON or missing required fields will result in an error response.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<h2 id="environment-variables"><a class="header" href="#environment-variables">Environment Variables</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>DUCKDB_LIB_DIR</code></td><td>Yes (build)</td><td>Path to directory containing <code>libduckdb.so</code></td></tr>
+<tr><td><code>LD_LIBRARY_PATH</code></td><td>Yes (runtime)</td><td>Must include <code>DUCKDB_LIB_DIR</code></td></tr>
+<tr><td><code>OFS_PROJECT</code></td><td>No</td><td>Default project name</td></tr>
+<tr><td><code>OFS_ONLINE_STORE</code></td><td>No</td><td>Online store type (<code>sqlite</code>, <code>redis</code>)</td></tr>
+<tr><td><code>OFS_REDIS_URL</code></td><td>No</td><td>Redis connection string</td></tr>
+<tr><td><code>RUST_LOG</code></td><td>No</td><td>Log level (e.g., <code>info</code>, <code>debug</code>)</td></tr>
+</tbody></table>
+</div>
+<h2 id="repoconfig-1"><a class="header" href="#repoconfig-1">RepoConfig</a></h2>
+<p>The <code>RepoConfig</code> struct controls store behavior:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct RepoConfig {
+    pub project: String,
+    pub online_store: String,
+    pub offline_store: String,
+    pub registry_type: String,
+    pub cache_ttl_seconds: i64,
+    pub redis_host: Option&lt;String&gt;,
+    pub redis_port: Option&lt;u16&gt;,
+    pub redis_db: Option&lt;i64&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="duckdb-configuration"><a class="header" href="#duckdb-configuration">DuckDB Configuration</a></h2>
+<p>DuckDB is linked at build time using <code>DUCKDB_LIB_DIR</code>:</p>
+<pre><code class="language-bash">export DUCKDB_LIB_DIR=/tmp/duckdb-lib
+export LD_LIBRARY_PATH=/tmp/duckdb-lib:$LD_LIBRARY_PATH
+cargo build
+</code></pre>
+<p>The DuckDB library is searched in:</p>
+<ol>
+<li><code>DUCKDB_LIB_DIR</code> environment variable</li>
+<li>System library paths</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="deployment"><a class="header" href="#deployment">Deployment</a></h1>
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
+<ul>
+<li>Linux (x86_64) or macOS (arm64/x86_64)</li>
+<li>Rust 1.85+ (edition 2024)</li>
+<li>DuckDB library (v1.5.0)</li>
+<li>Python 3.10+ (for Python bindings)</li>
+</ul>
+<h2 id="production-deployment"><a class="header" href="#production-deployment">Production Deployment</a></h2>
+<h3 id="option-1-rust-binary"><a class="header" href="#option-1-rust-binary">Option 1: Rust Binary</a></h3>
+<p>Build and deploy the Rust binary with DuckDB linked:</p>
+<pre><code class="language-bash">cargo build --release --workspace --exclude ofs-python
+./target/release/my-app
+</code></pre>
+<h3 id="option-2-python-package"><a class="header" href="#option-2-python-package">Option 2: Python Package</a></h3>
+<p>Build and install the Python wheel:</p>
+<pre><code class="language-bash">cd crates/ofs-python
+DUCKDB_LIB_DIR=/tmp/duckdb-lib maturin build --release
+pip install target/wheels/openfeaturestore-*.whl
+</code></pre>
+<h3 id="option-3-docker-recommended"><a class="header" href="#option-3-docker-recommended">Option 3: Docker (recommended)</a></h3>
+<pre><code class="language-dockerfile">FROM rust:latest AS builder
+RUN apt-get update &amp;&amp; apt-get install -y protobuf-compiler
+WORKDIR /app
+COPY . .
+RUN cargo build --release --exclude ofs-python
+
+FROM debian:bookworm-slim
+RUN apt-get update &amp;&amp; apt-get install -y libduckdb
+COPY --from=builder /app/target/release/ofs /usr/local/bin/
+CMD ["ofs"]
+</code></pre>
+<h2 id="backend-configuration"><a class="header" href="#backend-configuration">Backend Configuration</a></h2>
+<h3 id="sqlite-development"><a class="header" href="#sqlite-development">SQLite (Development)</a></h3>
+<pre><code class="language-yaml">registry:
+  type: sqlite
+  path: /var/lib/featurestore/registry.db
+
+online_store:
+  type: sqlite
+  path: /var/lib/featurestore/online.db
+
+offline_store:
+  type: duckdb
+  path: /var/lib/featurestore/offline.db
+</code></pre>
+<h3 id="redis-production"><a class="header" href="#redis-production">Redis (Production)</a></h3>
+<pre><code class="language-yaml">registry:
+  type: sqlite
+  path: /var/lib/featurestore/registry.db
+
+online_store:
+  type: redis
+  host: redis-cluster.example.com
+  port: 6379
+  db: 0
+
+offline_store:
+  type: duckdb
+  path: s3://my-bucket/offline-store/
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="monitoring"><a class="header" href="#monitoring">Monitoring</a></h1>
+<h2 id="logging"><a class="header" href="#logging">Logging</a></h2>
+<p>The feature store uses the <code>log</code> crate. Set log level via <code>RUST_LOG</code>:</p>
+<pre><code class="language-bash">RUST_LOG=info ofs materialize --start-date 1700000000 --end-date 1700086400
+RUST_LOG=debug ofs list-entities
+</code></pre>
+<h2 id="metrics"><a class="header" href="#metrics">Metrics</a></h2>
+<p>Key metrics to monitor:</p>
+<div class="table-wrapper"><table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>materialization_duration_ms</code></td><td>Time to materialize a feature view</td></tr>
+<tr><td><code>online_read_latency_ms</code></td><td>Online read p50/p99 latency</td></tr>
+<tr><td><code>online_write_throughput</code></td><td>Batch write throughput</td></tr>
+<tr><td><code>offline_query_duration_ms</code></td><td>Offline query execution time</td></tr>
+<tr><td><code>registry_operation_latency_ms</code></td><td>Registry CRUD latency</td></tr>
+</tbody></table>
+</div>
+<h2 id="health-checks"><a class="header" href="#health-checks">Health Checks</a></h2>
+<p>Store backends expose health check methods:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Registry
+let healthy = registry.health_check().await?;
+
+// Online store
+let healthy = online_store.health_check().await?;
+
+// Offline store
+let healthy = offline_store.health_check().await?;
+<span class="boring">}</span></code></pre></pre>
+<h2 id="alerting"><a class="header" href="#alerting">Alerting</a></h2>
+<p>Recommended alerts:</p>
+<ul>
+<li><strong>Stale materialization</strong>: No materialization in &gt;24 hours</li>
+<li><strong>Online store errors</strong>: &gt;1% error rate on reads</li>
+<li><strong>Offline query failures</strong>: Failed queries &gt; threshold</li>
+<li><strong>High latency</strong>: Online reads &gt;100ms p99</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
+<h2 id="code-of-conduct"><a class="header" href="#code-of-conduct">Code of Conduct</a></h2>
+<p>Please be respectful and constructive. We follow the Rust Code of Conduct.</p>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<ol>
+<li>Fork the repository</li>
+<li>Set up the build environment (see Building from Source)</li>
+<li>Make your changes</li>
+<li>Run tests</li>
+<li>Submit a pull request</li>
+</ol>
+<h2 id="code-style"><a class="header" href="#code-style">Code Style</a></h2>
+<ul>
+<li>Follow Rust edition 2024 idioms</li>
+<li>Use <code>cargo fmt</code> before committing</li>
+<li>Use <code>cargo clippy</code> and address all warnings</li>
+<li>No <code>unsafe</code> code unless absolutely necessary and documented</li>
+<li>Async trait methods should use <code>#[async_trait]</code></li>
+</ul>
+<h2 id="pull-request-guidelines"><a class="header" href="#pull-request-guidelines">Pull Request Guidelines</a></h2>
+<ul>
+<li>Keep PRs focused on a single change</li>
+<li>Include tests for new functionality</li>
+<li>Update documentation (mdbook pages) for user-facing changes</li>
+<li>Ensure all existing tests pass</li>
+<li>Add a clear description of the change and motivation</li>
+</ul>
+<h2 id="commit-messages"><a class="header" href="#commit-messages">Commit Messages</a></h2>
+<p>Follow conventional commits:</p>
+<pre><code>feat: add feature X
+fix: correct Y behavior
+docs: update API reference
+refactor: simplify Z
+test: add tests for W
+</code></pre>
+<h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
+<pre><code>├── crates/
+│   ├── ofs-core/          # Domain types and traits
+│   ├── ofs-proto/         # Protobuf definitions
+│   ├── ofs-registry/      # SQLite registry
+│   ├── ofs-offline-store/ # DuckDB offline store
+│   ├── ofs-online-store/  # SQLite/Redis online store
+│   ├── ofs-materialization/ # Materialization engine
+│   └── ofs-python/        # Python bindings
+├── protos/                # Protobuf source files
+├── docs/                  # mdbook documentation
+└── scripts/               # Build and utility scripts
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="building-from-source"><a class="header" href="#building-from-source">Building from Source</a></h1>
+<h2 id="prerequisites-2"><a class="header" href="#prerequisites-2">Prerequisites</a></h2>
+<ul>
+<li><strong>Rust</strong>: 1.85+ (install via <code>rustup</code>)</li>
+<li><strong>Protobuf compiler</strong>: <code>protoc</code> in PATH</li>
+<li><strong>DuckDB library</strong>: v1.5.0 pre-compiled library</li>
+<li><strong>Python</strong>: 3.10+ (for Python bindings)</li>
+<li><strong>maturin</strong>: For building the Python package</li>
+</ul>
+<h2 id="setup"><a class="header" href="#setup">Setup</a></h2>
+<h3 id="1-install-protobuf-compiler"><a class="header" href="#1-install-protobuf-compiler">1. Install Protobuf Compiler</a></h3>
+<pre><code class="language-bash"># Download protoc
+PB_REL="https://github.com/protocolbuffers/protobuf/releases"
+curl -LO $PB_REL/download/v27.0/protoc-27.0-linux-x86_64.zip
+unzip protoc-27.0-linux-x86_64.zip -d /tmp/protoc
+export PATH="/tmp/protoc/bin:$PATH"
+</code></pre>
+<h3 id="2-install-duckdb-library"><a class="header" href="#2-install-duckdb-library">2. Install DuckDB Library</a></h3>
+<pre><code class="language-bash">mkdir -p /tmp/duckdb-lib
+curl -LO https://github.com/duckdb/duckdb/releases/download/v1.5.0/libduckdb-linux-amd64.zip
+unzip libduckdb-linux-amd64.zip -d /tmp/duckdb-lib
+export DUCKDB_LIB_DIR=/tmp/duckdb-lib
+export LD_LIBRARY_PATH=/tmp/duckdb-lib:$LD_LIBRARY_PATH
+</code></pre>
+<h3 id="3-build-rust-crate"><a class="header" href="#3-build-rust-crate">3. Build Rust Crate</a></h3>
+<pre><code class="language-bash"># Build all crates except Python bindings
+cargo build --workspace --exclude ofs-python
+
+# Run tests (exclude Python crate)
+cargo test --workspace --exclude ofs-python
+</code></pre>
+<h3 id="4-build-python-package"><a class="header" href="#4-build-python-package">4. Build Python Package</a></h3>
+<pre><code class="language-bash">cd crates/ofs-python
+maturin develop --release
+</code></pre>
+<h2 id="docker-build"><a class="header" href="#docker-build">Docker Build</a></h2>
+<p>See <a href="development/deployment.html#option-3-docker-recommended">Deployment &gt; Docker</a> for a containerized build.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
+<h2 id="running-tests"><a class="header" href="#running-tests">Running Tests</a></h2>
+<h3 id="all-rust-tests-except-python-bindings"><a class="header" href="#all-rust-tests-except-python-bindings">All Rust Tests (except Python bindings)</a></h3>
+<pre><code class="language-bash"># Standard run (takes ~30s)
+cargo test --workspace --exclude ofs-python
+</code></pre>
+<h3 id="specific-crate"><a class="header" href="#specific-crate">Specific Crate</a></h3>
+<pre><code class="language-bash"># Core crate
+cargo test -p ofs-core
+
+# Registry
+cargo test -p ofs-registry
+
+# Offline store
+cargo test -p ofs-offline-store
+
+# Online store
+cargo test -p ofs-online-store
+
+# Materialization
+cargo test -p ofs-materialization
+</code></pre>
+<h3 id="test-report"><a class="header" href="#test-report">Test Report</a></h3>
+<p>After running the full test suite, verify output:</p>
+<pre><code>running 57 tests
+test result: ok. 56 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out
+</code></pre>
+<p>The one ignored test is the Redis online store test (requires a running Redis
+instance).</p>
+<h2 id="test-structure"><a class="header" href="#test-structure">Test Structure</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Crate</th><th>Tests</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>ofs-core</code></td><td>34</td><td>Types, serialization, value conversion</td></tr>
+<tr><td><code>ofs-materialization</code></td><td>5</td><td>Engine execution, incremental materialization</td></tr>
+<tr><td><code>ofs-offline-store</code></td><td>6</td><td>ASOF JOIN, query generation</td></tr>
+<tr><td><code>ofs-online-store</code></td><td>4 (1 ignored)</td><td>SQLite write/read, cache consistency</td></tr>
+<tr><td><code>ofs-registry</code></td><td>8</td><td>Entity/FV/DS/FS CRUD operations</td></tr>
+</tbody></table>
+</div>
+<h2 id="python-tests"><a class="header" href="#python-tests">Python Tests</a></h2>
+<pre><code class="language-bash">cd crates/ofs-python
+maturin develop --release
+python -m pytest tests/
+</code></pre>
+<h2 id="ci-testing"><a class="header" href="#ci-testing">CI Testing</a></h2>
+<p>GitHub Actions workflow runs:</p>
+<ol>
+<li><code>cargo test --workspace --exclude ofs-python</code></li>
+<li><code>cargo clippy --workspace --exclude ofs-python -- -D warnings</code></li>
+<li><code>cargo fmt --check</code></li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

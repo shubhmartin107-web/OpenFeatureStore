@@ -1,0 +1,29 @@
+[package]
+name = "ofs-server"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "OpenFeatureStore server binary"
+
+[dependencies]
+ofs-config = { path = "../ofs-config" }
+ofs-core = { path = "../ofs-core" }
+ofs-registry = { path = "../ofs-registry" }
+ofs-online-store = { path = "../ofs-online-store" }
+ofs-offline-store = { path = "../ofs-offline-store" }
+ofs-materialization = { path = "../ofs-materialization" }
+ofs-backfill = { path = "../ofs-backfill" }
+ofs-stream-ingest = { path = "../ofs-stream-ingest" }
+ofs-cache = { path = "../ofs-cache" }
+ofs-lifecycle = { path = "../ofs-lifecycle" }
+ofs-auth = { path = "../ofs-auth" }
+ofs-serving = { path = "../ofs-serving" }
+ofs-observability = { path = "../ofs-observability" }
+ofs-remote-store = { path = "../ofs-remote-store" }
+
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+anyhow.workspace = true
+sqlx.workspace = true
+chrono.workspace = true

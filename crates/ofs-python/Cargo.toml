@@ -1,0 +1,26 @@
+[package]
+name = "ofs-python"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Python bindings for OpenFeatureStore"
+
+[lib]
+name = "ofs_python"
+crate-type = ["cdylib"]
+
+[dependencies]
+ofs-core = { path = "../ofs-core" }
+ofs-registry = { path = "../ofs-registry" }
+ofs-offline-store = { path = "../ofs-offline-store" }
+ofs-online-store = { path = "../ofs-online-store" }
+ofs-materialization = { path = "../ofs-materialization" }
+
+pyo3 = { workspace = true, features = ["extension-module", "abi3-py38"] }
+tokio = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+once_cell = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }

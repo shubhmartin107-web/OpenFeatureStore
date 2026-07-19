@@ -1,0 +1,25 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "openfeaturestore"
+version = "0.1.0"
+authors = [
+    { name = "OpenFeatureStore Contributors" },
+]
+description = "OpenFeatureStore - Offline+Online Feature Store with point-in-time correctness"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: 3",
+]
+
+[project.scripts]
+ofs = "ofs.cli:main"
+ofs-mcp = "ofs.mcp_server:main"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+module-name = "ofs._rust"
+bindings = "pyo3"

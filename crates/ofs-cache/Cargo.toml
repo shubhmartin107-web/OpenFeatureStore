@@ -1,0 +1,19 @@
+[package]
+name = "ofs-cache"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Multi-tier cache for OpenFeatureStore (moka L1, Redis L2, warming)"
+
+[dependencies]
+ofs-core = { path = "../ofs-core" }
+ofs-config = { path = "../ofs-config" }
+moka.workspace = true
+redis = { workspace = true, features = ["tokio-comp", "connection-manager"] }
+tokio = { workspace = true, features = ["time", "sync"] }
+tracing = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
