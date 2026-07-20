@@ -2,9 +2,6 @@
 ignore = []
 
 [licenses]
-unlicensed = "deny"
-allow-osi-fsf-free = "neither"
-default = "deny"
 allow = [
     "Apache-2.0",
     "MIT",
